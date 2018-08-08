@@ -100,8 +100,9 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	p_particlePhi   =   evt->GetPrimaryVertex(0)->GetPrimary(0)->GetMomentumDirection().phi();
 
 
-	//primary particle energy when generated 
-	p_particleEnergy = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetTotalEnergy();    //ATTENZIONE NON CONFONDERE ENERGIA TOTALE E CINETICA!!
+	//primary particle total energy when generated 
+	p_particleEnergy = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetTotalEnergy();    	
+	
 	//primary particle mass
 	G4double mass = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetMass();
 
@@ -124,6 +125,76 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	else myTrackLScint = sqrt( pow((p_particleX-x_down),2) + pow((p_particleY-y_down),2) + pow(d,2) );   //computing the travelled distance 
 
 
+/*
+	//computing the mean energy loss with the Bethe-Block formula
+	//Carbon, density:2g/cm3 A:12 Z:6 I: 81 eV 
+
+	G4double m_e = 0.511 *MeV;
+
+	G4double density = 8.96*g/cm3;
+	G4double Z = 29;
+	G4double A = 63.546 ;
+	G4double I = 322.*eV;
+
+	//G4double I = Z*(12 + 7/Z) *eV;                       //for Z<13        
+	//G4double I = Z*(9.76 + 58.8*pow(Z,-1.19)) *eV;      // for Z >= 13 
+	G4double  gamma = p_particleEnergy/mass;
+	G4double beta = sqrt(1.-pow(gamma,-2));
+	G4double eta = beta*gamma;
+	G4double k = m_e/mass;        //mass= mass of the muon
+	G4double W_max = (2.*m_e*eta*eta)/(1.+2.*k*sqrt(1.+eta*eta)+k*k);
+
+	//shell and density corrections
+	G4double C = -4.42;	
+	G4double a = 0.1434;
+	G4double y = 2.90;
+	G4double X_1 = 3.28;
+	G4double X_0 = 0.0254; 
+
+	G4double X = log10(beta*gamma);
+
+
+	G4double delta;
+	if( X < X_0)                 delta = 0;
+	else if (X > X_0 && X < X_1) delta = 4.6052*X+C+a*pow(X_1-X,y); 
+	else if (X > X_1)            delta = 4.6052*X +C;
+
+
+
+	//Bethe-Block
+	G4double dE_over_dx = 0.1535*MeV*cm2/g*density*(Z/A)*pow(charge/beta, 2)*(log((2*m_e*gamma*gamma*beta*beta*W_max)/(I*I)) -2*beta*beta -delta-2*C/Z);
+
+
+
+
+	myEnergyScint = dE_over_dx * myTrackLScint;
+
+
+
+	//G4cout << "MYFUNC   "<< beta*gamma <<"   "<< dE_over_dx/density*g/MeV/cm2   << G4endl;
+
+
+
+
+*/
+
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void EventAction::EndOfEventAction(const G4Event*)
+{
+	//G4double density = 8.96*g/cm3;
+
+	//	G4cout << "MYFUNC   "<<beta*gamma<<"   "<<(fEnergyScint/fTrackLScint)/density*g/cm2/MeV   << G4endl;
+
+
+
+
+
+/*
+	//If you want to compute the energy loss with the track length comuputed by Geant4, then use this part:
 
 	//computing the mean energy loss with the Bethe-Block formula
 	//Carbon, density:2g/cm3 A:12 Z:6 I: 81 eV 
@@ -143,8 +214,8 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	G4double k = m_e/mass;        //mass= mass of the muon
 	G4double W_max = (2.*m_e*eta*eta)/(1.+2.*k*sqrt(1.+eta*eta)+k*k);
 
-//shell and density corrections
-/*	G4double C = -4.42;	
+	//shell and density corrections
+	G4double C = -4.42;	
 	G4double a = 0.1434;
 	G4double y = 2.90;
 	G4double X_1 = 3.28;
@@ -157,36 +228,23 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	if( X < X_0)                 delta = 0;
 	else if (X > X_0 && X < X_1) delta = 4.6052*X+C+a*pow(X_1-X,y); 
 	else if (X > X_1)            delta = 4.6052*X +C;
-*/
+
 
 
 	//Bethe-Block
-	G4double dE_over_dx = 0.1535*MeV*cm2/g*density*(Z/A)*pow(charge/beta, 2)*(log((2*m_e*gamma*gamma*beta*beta*W_max)/(I*I)) -2*beta*beta);     //   -delta-2*C/Z);
+	G4double dE_over_dx = 0.1535*MeV*cm2/g*density*(Z/A)*pow(charge/beta, 2)*(log((2*m_e*gamma*gamma*beta*beta*W_max)/(I*I)) -2*beta*beta -delta-2*C/Z);
 
 
 
 
-	myEnergyScint = dE_over_dx * myTrackLScint;
+	myEnergyScint = dE_over_dx * fTrackLScint;
 
 
-
-	//G4cout << "MYFUNC   "<< beta*gamma <<"   "<< dE_over_dx/density*g/MeV/cm2   << G4endl;
-
-
-
+*/
 
 
 
 
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void EventAction::EndOfEventAction(const G4Event*)
-{
-//G4double density = 8.96*g/cm3;
-
-//	G4cout << "MYFUNC   "<<beta*gamma<<"   "<<(fEnergyScint/fTrackLScint)/density*g/cm2/MeV   << G4endl;
 
 
 
