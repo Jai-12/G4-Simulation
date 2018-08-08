@@ -79,7 +79,7 @@ G4double PrimaryGeneratorAction::random_E(){                       // Energy dis
 
 	r = r_max * myrandpos();
 
-	return r;  //return 1*GeV;
+	return 107*MeV;  //return 1*GeV;
 }
 
 
@@ -163,8 +163,12 @@ void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 	particlePhi    = random_Phi(); 
 
 
+	//SETTING THE KINETIC ENERGY, AND NOT THE TOTAL ENERGY
+	particleGun->SetParticleEnergy(particleEnergy);   
+	
+	//you can sett the Momentum if you prefer
+//	particleGun->SetParticleMomentum(particleEnergy);
 
-	particleGun->SetParticleEnergy(particleEnergy);
 
 	G4ThreeVector ParticlePosition(particleX, particleY, particleZ);
 	particleGun->SetParticlePosition(ParticlePosition);

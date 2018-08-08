@@ -131,8 +131,8 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	G4double m_e = 0.511 *MeV;
 
 	G4double density = 8.96*g/cm3;
-	G4double A = 29;
-	G4double Z = 63.546 ;
+	G4double Z = 29;
+	G4double A = 63.546 ;
 	G4double I = 322.*eV;
 
 	//G4double I = Z*(12 + 7/Z) *eV;                       //for Z<13        
