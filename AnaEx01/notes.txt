@@ -1,0 +1,4 @@
+Here you can find some material for photon propagation in scintillator
+
+
+geant4/examples/extended/optical/LXe
