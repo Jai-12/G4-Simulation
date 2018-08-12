@@ -48,7 +48,7 @@
 
 
 G4double PrimaryGeneratorAction::myrand(){                         // First uniform  distribution (from -1 to 1)
- 
+
 	//generate a pseudo random number in the interval [-1;1]
 	G4double r,sign;
 	r = (  CLHEP::HepRandom::getTheEngine()->flat() );
@@ -150,7 +150,9 @@ void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 	//particle definition
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
-	particleGun->SetParticleDefinition(particleTable->FindParticle(particleName="mu+")); //I could use mu-, or generate randomly both mu- and mu+
+	particleGun->SetParticleDefinition( //I could use mu-, or generate randomly both mu- and mu+
+			particleTable->
+			FindParticle(particleName="mu+")); 
 
 
 	//Setting energy position and momentum direction
@@ -165,9 +167,9 @@ void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 
 	//SETTING THE KINETIC ENERGY, AND NOT THE TOTAL ENERGY
 	particleGun->SetParticleEnergy(particleEnergy);   
-	
+
 	//you can sett the Momentum if you prefer
-//	particleGun->SetParticleMomentum(particleEnergy);
+	//	particleGun->SetParticleMomentum(particleEnergy);
 
 
 	G4ThreeVector ParticlePosition(particleX, particleY, particleZ);
