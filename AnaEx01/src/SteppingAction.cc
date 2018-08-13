@@ -63,6 +63,11 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
+        // get volume of the current step
+        G4VPhysicalVolume* volume
+                 = aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+
+
 	// get the track of the current step
 	G4Track* track = aStep->GetTrack(); 
 
@@ -70,9 +75,40 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	G4String ParticleName = track->GetDynamicParticle()-> 
 		GetParticleDefinition()->GetParticleName(); 
 
-	// define a vector of secondaries
+
+	// collect energy and track length step by step
+	G4double edep  = 0;
+	G4double stepl = 0;
+
+	if (ParticleName == "mu+" &&  volume == fDetector->GetScint() ) {
+		edep  = aStep->GetTotalEnergyDeposit();
+		stepl = aStep->GetStepLength();
+	};
+
+
+
+		// define a vector of secondaries
 		const std::vector<const G4Track*>* secondaries = 
 			aStep->GetSecondaryInCurrentStep(); 
+
+
+
+
+	// get the number of photon generated in the current step	
+	G4int nphot = 0;
+	if (ParticleName == "mu+" && secondaries->size()>0) {nphot = secondaries->size();};
+
+
+
+         fEventAction->AddScint(edep,stepl,nphot);
+
+
+
+
+
+
+
+
 
 	//	if (ParticleName != "opticalphoton" && secondaries->size()>0) {
 	/*		for(unsigned int i=0; i<secondaries->size(); ++i) { 
@@ -94,25 +130,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 
-	// collect energy and track length step by step
-	G4double edep  = 0;
-	G4double stepl = 0;
 
-	if (ParticleName == "mu+") {
-		G4double edep  = aStep->GetTotalEnergyDeposit();
-		G4double stepl = aStep->GetStepLength();
-	};
-
-	// get the number of photon generated in the current step	
-	G4int nphot = 0;
-	if (ParticleName == "mu+" && secondaries->size()>0) {nphot = secondaries->size();};
-
-	// get volume of the current step
-	G4VPhysicalVolume* volume 
-		= aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
-
-	// add energy dep, legth and photon numbers 
-	if (volume == fDetector->GetScint()) fEventAction->AddScint(edep,stepl,nphot);
 
 
 
