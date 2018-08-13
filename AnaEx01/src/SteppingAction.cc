@@ -63,9 +63,9 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-        // get volume of the current step
-        G4VPhysicalVolume* volume
-                 = aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+	// get volume of the current step
+	G4VPhysicalVolume* volume
+		= aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 
 
 	// get the track of the current step
@@ -87,9 +87,9 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 
-		// define a vector of secondaries
-		const std::vector<const G4Track*>* secondaries = 
-			aStep->GetSecondaryInCurrentStep(); 
+	// define a vector of secondaries
+	const std::vector<const G4Track*>* secondaries = 
+		aStep->GetSecondaryInCurrentStep(); 
 
 
 
@@ -100,38 +100,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 
-         fEventAction->AddScint(edep,stepl,nphot);
-
-
-
-
-
-
-
-
-
-	//	if (ParticleName != "opticalphoton" && secondaries->size()>0) {
-	/*		for(unsigned int i=0; i<secondaries->size(); ++i) { 
-			if (secondaries->at(i)->GetParentID()>0) { 
-			if(secondaries->at(i)->GetDynamicParticle()->GetParticleDefinition() 
-			== G4OpticalPhoton::OpticalPhotonDefinition()){ 
-			if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
-			== "Scintillation")fScintillationCounter++; 
-			if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
-			== "Cerenkov")fCerenkovCounter++; 
-			} 
-			} 
-			} 
-			} 
-
-			G4cout << " OPTICAL: "<< ParticleName << "  "  << secondaries->size()  << "  "<< fScintillationCounter  << "  " << fCerenkovCounter   <<G4endl;	
-
-	 */
-
-
-
-
-
+	fEventAction->AddScint(edep,stepl,nphot);
 
 
 
