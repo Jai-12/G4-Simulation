@@ -57,11 +57,8 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 	RegisterPhysics( new MuonPhysics("muon"));
 
 	// Optical Physics
-	RegisterPhysics( new OpticalPhysics("optical"));
+//	RegisterPhysics( new OpticalPhysics("optical"));
 
-
-
-	/* THIS PART CAN BE USED TO SIMULATE THE PHOTONS PROPAGATION INTO THE SCINTILLATOR
 
 	// Optical Physics
 	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
@@ -78,7 +75,7 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 	opticalPhysics->SetTrackSecondariesFirst(kCerenkov,true);
 	opticalPhysics->SetTrackSecondariesFirst(kScintillation,true); 
 
-	 */
+	 
 
 }
 

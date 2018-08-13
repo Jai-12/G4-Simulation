@@ -63,48 +63,55 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
+	// get the track of the current step
+	G4Track* track = aStep->GetTrack(); 
+
+	// get the name of the particle on track
+	G4String ParticleName = track->GetDynamicParticle()-> 
+		GetParticleDefinition()->GetParticleName(); 
+
+	// define a vector of secondaries
+		const std::vector<const G4Track*>* secondaries = 
+			aStep->GetSecondaryInCurrentStep(); 
+
+	//	if (ParticleName != "opticalphoton" && secondaries->size()>0) {
+	/*		for(unsigned int i=0; i<secondaries->size(); ++i) { 
+			if (secondaries->at(i)->GetParentID()>0) { 
+			if(secondaries->at(i)->GetDynamicParticle()->GetParticleDefinition() 
+			== G4OpticalPhoton::OpticalPhotonDefinition()){ 
+			if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
+			== "Scintillation")fScintillationCounter++; 
+			if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
+			== "Cerenkov")fCerenkovCounter++; 
+			} 
+			} 
+			} 
+			} 
+
+			G4cout << " OPTICAL: "<< ParticleName << "  "  << secondaries->size()  << "  "<< fScintillationCounter  << "  " << fCerenkovCounter   <<G4endl;	
+
+	 */
+
+
+
+	// collect energy and track length step by step
+	G4double edep  = 0;
+	G4double stepl = 0;
+
+	if (ParticleName == "mu+") {
+		G4double edep  = aStep->GetTotalEnergyDeposit();
+		G4double stepl = aStep->GetStepLength();
+	};
+
+	// get the number of photon generated in the current step	
+	G4int nphot = 0;
+	if (ParticleName == "mu+" && secondaries->size()>0) {nphot = secondaries->size();};
+
 	// get volume of the current step
 	G4VPhysicalVolume* volume 
 		= aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
 
-	
-	// collect energy and track length step by step
-	G4double edep  = aStep->GetTotalEnergyDeposit();
-	G4double stepl = aStep->GetStepLength();
-
-	// count scintillation and cherenkov photons separately
-
-	G4int	fScintillationCounter = 0; 
-	G4int	fCerenkovCounter = 0; 
-	
-	G4Track* track = aStep->GetTrack(); 
-
-	G4String ParticleName = track->GetDynamicParticle()-> 
-		GetParticleDefinition()->GetParticleName(); 
-
-	const std::vector<const G4Track*>* secondaries = 
-		aStep->GetSecondaryInCurrentStep(); 
-
-	if (ParticleName != "opticalphoton" && secondaries->size()>0) { 
-		for(unsigned int i=0; i<secondaries->size(); ++i) { 
-			if (secondaries->at(i)->GetParentID()>0) { 
-				if(secondaries->at(i)->GetDynamicParticle()->GetParticleDefinition() 
-						== G4OpticalPhoton::OpticalPhotonDefinition()){ 
-					if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
-							== "Scintillation")fScintillationCounter++; 
-					if (secondaries->at(i)->GetCreatorProcess()->GetProcessName() 
-							== "Cerenkov")fCerenkovCounter++; 
-				} 
-			} 
-		} 
-	} 
-
-
-
-
-	// sum scintillation and cherenkov photons	
-	G4int nphot = fScintillationCounter + fCerenkovCounter; 
-	// add energy dep, legth and photon numbers for this step
+	// add energy dep, legth and photon numbers 
 	if (volume == fDetector->GetScint()) fEventAction->AddScint(edep,stepl,nphot);
 
 

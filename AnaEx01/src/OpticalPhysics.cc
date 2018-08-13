@@ -23,9 +23,11 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-//
-//
-//
+//   NOTE: A photon is called 'optical' when its wavelegth is much greater
+//   than the typical atomic spacing. In geant4 the concept of 
+//   'optical photons' is a class of particles detached  from their high 
+//   energy 'gamma' cousins. 
+
 #include "OpticalPhysics.hh"
 
 #include "globals.hh"
@@ -84,9 +86,10 @@ void OpticalPhysics::ConstructProcess()
 	fCerenkovProcess->SetTrackSecondariesFirst(true);
 	
 	fScintillationProcess = new G4Scintillation("Scintillation");
-	fScintillationProcess->SetScintillationYieldFactor(1.);
-	fScintillationProcess->SetTrackSecondariesFirst(true);
-	
+	//fScintillationProcess->SetScintillationYieldFactor(1.);
+	fScintillationProcess->SetTrackSecondariesFirst(true);             //???
+	fScintillationProcess->SetScintillationByParticleType(true);
+
 	fAbsorptionProcess = new G4OpAbsorption();
 	
 	fRayleighScatteringProcess = new G4OpRayleigh();
