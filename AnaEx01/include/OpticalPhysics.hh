@@ -26,65 +26,63 @@
 //
 //
 //
-// 
+#ifndef OpticalPhysics_h
+#define OpticalPhysics_h 1
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-#ifndef EventAction_h
-#define EventAction_h 1
-
-#include "G4UserEventAction.hh"
 #include "globals.hh"
+#include "G4ios.hh"
+
+#include "G4VPhysicsConstructor.hh"
 
 
-class RunAction;
-class HistoManager;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+ #include "G4Cerenkov.hh"
+ #include "G4Scintillation.hh"
+ #include "G4OpAbsorption.hh"
+ #include "G4OpRayleigh.hh"
+ #include "G4OpMieHG.hh"
+ #include "G4OpBoundaryProcess.hh"
 
-class EventAction : public G4UserEventAction
+
+
+class G4Cerenkov;
+class G4Scintillation;
+class G4OpAbsorption;
+class G4OpRayleigh;
+class G4OpMieHG;
+class G4OpBoundaryProcess;
+
+
+
+class OpticalPhysics : public G4VPhysicsConstructor
 {
 	public:
-		EventAction(RunAction*, HistoManager*);
-		virtual ~EventAction();
 
-		virtual void  BeginOfEventAction(const G4Event*);
-		virtual void  EndOfEventAction(const G4Event*);
+		OpticalPhysics(const G4String& name = "optical");
+		virtual ~OpticalPhysics();
 
-		void AddScint(G4double de, G4double dl, G4int dn) {
-						fEnergyScint += de; 
-						fTrackLScint += dl; 
-						fPhotonNumber += dn;};
+		// This method will be invoked in the Construct() method.
+		// each particle type will be instantiated
+		virtual void ConstructParticle();
+
+		// This method will be invoked in the Construct() method.
+		// each physics process will be instantiated and
+		// registered to the process manager of each particle type
+		virtual void ConstructProcess();
+
 
 	private:
-		RunAction*    fRunAct;
-		HistoManager* fHistoManager;
 
-		G4double p_particleX;
-		G4double p_particleY;
-		G4double p_particleTheta;
-		G4double p_particlePhi;
-		G4double p_particleEnergy;
+		static G4int fMaxNumPhotonStep;
 
-
-//		G4double gamma;
-//		G4double beta;
+		static G4Cerenkov* 	    fCerenkovProcess;
+		static G4Scintillation*     fScintillationProcess;
+		static G4OpAbsorption*      fAbsorptionProcess;
+		static G4OpRayleigh*   	    fRayleighScatteringProcess;
+		static G4OpMieHG*           fMieHGScatteringProcess;
+		static G4OpBoundaryProcess* fBoundaryProcess;
 
 
-		G4double  myTrackLScint;    	//add comments
-		G4double  myEnergyScint;  	//add comments
-
-		G4int 	  fPhotonNumber;	
-
-		G4double  fEnergyScint;
-		G4double  fTrackLScint;
-
-		G4int     fPrintModulo;        // still trying to understand the meaning of this variable...                      
 };
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif
-
-

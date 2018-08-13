@@ -33,6 +33,7 @@
 #include "GeneralPhysics.hh"
 #include "EMPhysics.hh"
 #include "MuonPhysics.hh"
+#include "OpticalPhysics.hh"
 
 #include "G4OpticalPhysics.hh"
 #include "G4OpticalProcessIndex.hh"
@@ -54,6 +55,10 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 
 	// Muon Physics
 	RegisterPhysics( new MuonPhysics("muon"));
+
+	// Optical Physics
+	RegisterPhysics( new OpticalPhysics("optical"));
+
 
 
 	/* THIS PART CAN BE USED TO SIMULATE THE PHOTONS PROPAGATION INTO THE SCINTILLATOR

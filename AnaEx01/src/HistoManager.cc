@@ -84,6 +84,9 @@ void HistoManager::Book()
 	analysisManager->CreateH1("myLScint","mytrackL in scintillator (cm)", 100, 0., 3.5*cm/cm);
 	// id = 3
 	analysisManager->CreateH1("myEnergyScint","myEdep in scintillator (MeV)", 100, 0., 1000*MeV/MeV);
+	// id = 4
+	analysisManager->CreateH1("photonNumber","photon number", 100, 0., 1000);
+
 
 
 
