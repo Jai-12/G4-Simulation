@@ -79,7 +79,13 @@ EventAction::~EventAction()
 
 void EventAction::BeginOfEventAction(const G4Event* evt)
 {  
-	
+	// initialisation per event
+	fEnergyScint  = 0;
+	fTrackLScint  = 0;
+	myTrackLScint = 0;
+	myEnergyScint = 0;
+
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -87,12 +93,6 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 void EventAction::EndOfEventAction(const G4Event* evt)
 {
 // G4int evtNb = evt->GetEventID();
-
-	// initialisation per event
-	fEnergyScint  = 0;
-	fTrackLScint  = 0;
-	myTrackLScint = 0;
-	myEnergyScint = 0;
 
 	evt->GetPrimaryVertex(0)->GetPrimary(0)  ;
 
