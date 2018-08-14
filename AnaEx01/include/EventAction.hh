@@ -65,10 +65,6 @@ class EventAction : public G4UserEventAction
 		G4double p_particleEnergy;
 
 
-//		G4double gamma;
-//		G4double beta;
-
-
 		G4double  myTrackLScint;
 		G4double  myEnergyScint;
 
