@@ -171,10 +171,30 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 	G4double dE_over_dx = 0.1535*MeV*cm2/g*density*(Z/A)*pow(charge/beta, 2)*(log((2*m_e*gamma*gamma*beta*beta*W_max)/(I*I)) -2*beta*beta -delta-2*C/Z);
 
 
-	//G4cout << "MYFUNC   "<< beta*gamma <<"   "<< dE_over_dx/density*g/MeV/cm2   << G4endl;
+
+	// landau flucuations
+
+
+	double espilon = log(*I*I)-log(2*mass*beta*beta) + beta*beta;
+
+	double Lambda(double mean_energy, double energy, double epsilon){
+	
+	return (enery-mean_energy*(log(mean_energy)-epsilon+1-0.577))/mean_enery;
+
+	};
+
+	
+	double Phi(double lambda){
+		for(int t=0.001; t<1e12; t++){
+			phi = Phi + exp(-t*log(t)-t*lambda)*sin(t*CLHEP::pi);
+		}
+		return phi/CLHEP::pi;
+	};
 
 
 	myEnergyScint = dE_over_dx * fTrackLScint;
+
+//	G4cout << "MYFUNC   "<< myEnergyScint / W_max  << G4endl;
 
 
 
