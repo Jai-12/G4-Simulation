@@ -98,7 +98,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	G4int nphot = 0;
 	// Actually here I am assuming that all the secondaries generated from muon are optical photons
 	// For instance I am negletting all the optical photons generated from secondary ionizations
-	// This is mainly done in order to reduce the computing time  
+	// This is done in order to reduce the computing time  
 	if (ParticleName == "mu+" && secondaries->size()>0) {nphot = secondaries->size();};
 
 
