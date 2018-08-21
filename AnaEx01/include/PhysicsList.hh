@@ -2,10 +2,10 @@
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * The  Geantsoftware  is  copyright of the Copyright Holders  of *
+// * the GeantCollaboration.  It is provided  under  the terms  and *
+// * conditions of the GeantSoftware License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geantlicense .  These *
 // * include a list of copyright holders.                             *
 // *                                                                  *
 // * Neither the authors of this software system, nor their employing *
@@ -16,11 +16,11 @@
 // * for the full disclaimer and the limitation of liability.         *
 // *                                                                  *
 // * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
+// * technical work of the GEANTcollaboration.                      *
 // * By using,  copying,  modifying or  distributing the software (or *
 // * any work based  on the software)  you  agree  to acknowledge its *
 // * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
+// * acceptance of all terms of the GeantSoftware license.          *
 // ********************************************************************
 //
 //
@@ -29,10 +29,11 @@
 #ifndef PhysicsList_h
 #define PhysicsList_h 1
 
-#include "G4VModularPhysicsList.hh"
+#include "GModularPhysicsList.hh"
 #include "globals.hh"
 
-class PhysicsList: public G4VModularPhysicsList
+
+class PhysicsList: public GModularPhysicsList
 {
 	public:
 
@@ -43,6 +44,7 @@ class PhysicsList: public G4VModularPhysicsList
 
 		// SetCuts()
 		virtual void SetCuts();
+
 
 };
 

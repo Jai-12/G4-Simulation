@@ -24,51 +24,37 @@
 // ********************************************************************
 //
 //
-/// \file src/PhysicsList.cc
-/// \brief Implementation of the PhysicsList class
+/// \file include/OpticalPhysics.hh
+/// \brief Definition of the OpticalPhysics class
 //
 //
-#include "PhysicsList.hh"
+#ifndef OpticalPhysics_h
+#define OpticalPhysics_h 1
 
-#include "GeneralPhysics.hh"
-#include "EMPhysics.hh"
-#include "MuonPhysics.hh"
+#include "globals.hh"
+#include "G4ios.hh"
 
-#include "G4OpticalPhysics.hh"
-#include "G4OpticalProcessIndex.hh"
+#include "G4VPhysicsConstructor.hh"
 
-#include "G4SystemOfUnits.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-PhysicsList::PhysicsList() : G4VModularPhysicsList()
+class OpticalPhysics : public G4VPhysicsConstructor
 {
-	// default cut value  (1.0mm)
-	defaultCutValue = 1.0*mm;
+	public:
 
-	// General Physics
-	RegisterPhysics( new GeneralPhysics("general") );
+		OpticalPhysics(const G4String& name ="optical");
+		virtual ~ OpticalPhysics();
 
-	// EM Physics
-	RegisterPhysics( new EMPhysics("standard EM"));
+	public:
 
-	// Muon Physics
-	RegisterPhysics( new MuonPhysics("muon"));
+		// This method will be invoked in the Construct() method.
+		// each particle type will be instantiated
+		virtual void ConstructParticle();
 
-	// Optical Physics
-	RegisterPhysics( new OpticalPhysics("optical phyics"));
+		// This method will be invoked in the Construct() method.
+		// each physics process will be instantiated and
+		// registered to the process manager of each particle type
+		virtual void ConstructProcess();
 
+};
 
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-PhysicsList::~PhysicsList() {}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void PhysicsList::SetCuts(){
-	//  " G4VUserPhysicsList::SetCutsWithDefaule" method sets
-	//   the default cut value for all particle types
-	SetCutsWithDefault();
-}
+#endif
