@@ -147,6 +147,9 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 {
 
+	CLHEP::HepRandom::setTheSeed(time(0));
+
+	
 	//particle definition
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 	G4String particleName;
