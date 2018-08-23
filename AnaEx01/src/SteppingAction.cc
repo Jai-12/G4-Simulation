@@ -63,9 +63,17 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-	// get volume of the current step
-	G4VPhysicalVolume* volume
+	// get the volume where the particle is located
+	//     at the beginning of the current step
+	G4VPhysicalVolume* init_volume
 		= aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+
+
+	// get the volume where the particle is located
+	//     at the end of the current step
+	G4VPhysicalVolume* final_volume
+		= aStep->GetPostStepPoint()->GetTouchableHandle()->GetVolume();
+
 
 
 	// get the track of the current step
@@ -80,9 +88,38 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	G4double edep  = 0;
 	G4double stepl = 0;
 
-	if (ParticleName == "mu+" &&  volume == fDetector->GetScint() ) {
+	if (ParticleName == "mu+" &&  init_volume == fDetector->GetScint() ) {
 		edep  = aStep->GetTotalEnergyDeposit();
 		stepl = aStep->GetStepLength();
+	};
+
+// count the optical photons that exit the Scintillator 
+// ATTENTION: in the DetectorConstruction class you have to set the world sizes correctly to make it work 	
+	G4int photons_collected = 0;		
+	if (ParticleName == "opticalphoton" /*&& ( 
+			  aStep->GetPostStepPoint()->GetPosition().getZ()<0.5*cm
+			&&  aStep->GetPostStepPoint()->GetPosition().getZ()>-0.5*cm
+			&&  aStep->GetPostStepPoint()->GetPosition().getX()<10*cm
+			&&  aStep->GetPostStepPoint()->GetPosition().getX()>-10*cm
+			&&  aStep->GetPostStepPoint()->GetPosition().getY()<61*cm
+			&&  aStep->GetPostStepPoint()->GetPosition().getY()>-61*cm) 
+
+                         &&  !(aStep->GetPreStepPoint()->GetPosition().getZ()<0.5*cm
+                         &&  aStep->GetPreStepPoint()->GetPosition().getZ()>-0.5*cm
+                         &&  aStep->GetPreStepPoint()->GetPosition().getX()<10*cm
+                         &&  aStep->GetPreStepPoint()->GetPosition().getX()>-10*cm
+                         &&  aStep->GetPreStepPoint()->GetPosition().getY()<61*cm
+                         &&  aStep->GetPreStepPoint()->GetPosition().getY()>-61*cm
+									)	)
+*/
+   && init_volume == fDetector->GetScint() 
+&&   final_volume == fDetector->GetWorld()   )
+
+
+	{
+
+		photons_collected = 1;		
+
 	};
 
 
@@ -95,15 +132,35 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 	// get the number of photon generated in the current step	
-	G4int nphot = 0;
+	G4int photons_generated = 0;
+
+// I CAN DO IT LIKE THIS:
+
 	// Actually here I am assuming that all the secondaries generated from muon are optical photons
 	// For instance I am negletting all the optical photons generated from secondary ionizations
-	// This is mainly done in order to reduce the computing time  
-	if (ParticleName == "mu+" && secondaries->size()>0) {nphot = secondaries->size();};
+	// This is mainly done in order to reduce the computing time   
+//	if (/*ParticleName == "mu+" &&*/ secondaries->size()>0) {photons_generated = secondaries->size();};
+
+// OR I CAN DO IT THIS WA
+
+    if (secondaries->size()>0) {
+       for(unsigned int i=0; i<secondaries->size(); ++i) {
+          if (secondaries->at(i)->GetParentID()>0) {
+             if(secondaries->at(i)->GetDynamicParticle()->GetParticleDefinition()
+                 == G4OpticalPhoton::OpticalPhotonDefinition()){
+                if (secondaries->at(i)->GetCreatorProcess()->GetProcessName()
+                 == "Scintillation")photons_generated++;
+                if (secondaries->at(i)->GetCreatorProcess()->GetProcessName()
+                 == "Cerenkov")photons_generated++;
+             }   
+          }
+       }
+    }
+ 
 
 
 
-	fEventAction->AddScint(edep,stepl,nphot);
+	fEventAction->AddScint(edep,stepl,photons_generated, photons_collected);
 
 
 

@@ -38,6 +38,7 @@
 #include "globals.hh"
 
 class G4Box;
+class G4Trd;
 class G4LogicalVolume;
 class G4VPhysicalVolume;
 class G4Material;
@@ -60,34 +61,54 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 
 
-		G4double GetWorldSizeX()           {return fWorldSizeX;}; 
-		G4double GetWorldSizeY()           {return fWorldSizeY;};
-		G4double GetWorldSizeZ()           {return fWorldSizeZ;};
+		//		G4double GetWorldSizeX()           {return fWorldSizeX;}; 
+		//		G4double GetWorldSizeY()           {return fWorldSizeY;};
+		//		G4double GetWorldSizeZ()           {return fWorldSizeZ;};
 
 
-		const G4VPhysicalVolume* GetphysiWorld()   {return fPhysiWorld;};           
+		const G4VPhysicalVolume* GetWorld()  	   {return fPhysiWorld;};           
 		const G4VPhysicalVolume* GetScint()        {return fPhysiScint;};
+		const G4VPhysicalVolume* GetPMT()          {return fPhysiPMT;};
+
 
 	private:
+
+		G4Material*        fWorldMaterial;
+		G4double           fWorldSizeX;
+		G4double           fWorldSizeY;
+		G4double  	   fWorldSizeZ;
+
 
 		G4Material* 	   fScintMaterial;  
 		G4double           fScintThickness;
 		G4double           fScintSizeX;
 		G4double           fScintSizeY;
 
-		G4Material*        fDefaultMaterial;
-		G4double           fWorldSizeX;
-		G4double           fWorldSizeY;
-		G4double  	   fWorldSizeZ;
+		G4Material*        fPMTMaterial;
+		G4double 		PMT_dxa; 
+		G4double  		PMT_dxb;
+		G4double  		PMT_dyb;
+		G4double 		PMT_dya; 
+		G4double 		PMT_dz;
+
+
+
+
+
+		G4Box*             fSolidWorld;    //pointer to the solid World 
+		G4LogicalVolume*   fLogicWorld;    //pointer to the logical World
+		G4VPhysicalVolume* fPhysiWorld;    //pointer to the physical World
 
 
 		G4Box*             fSolidScint;    //pointer to the solid Scintillator
 		G4LogicalVolume*   fLogicScint;    //pointer to the logical Scintillator
 		G4VPhysicalVolume* fPhysiScint;    //pointer to the physical Scintillator
 
-		G4Box*             fSolidWorld;    //pointer to the solid World 
-		G4LogicalVolume*   fLogicWorld;    //pointer to the logical World
-		G4VPhysicalVolume* fPhysiWorld;    //pointer to the physical World
+		G4Trd*             fSolidPMT;    //pointer to the solid PTM
+		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT
+		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT
+
+
 
 	private:
 

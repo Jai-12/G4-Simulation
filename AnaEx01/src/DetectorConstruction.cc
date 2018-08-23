@@ -36,7 +36,10 @@
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 
+#include "G4MaterialPropertyVector.hh"
+
 #include "G4Box.hh"
+#include "G4Trd.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4PVReplica.hh"
@@ -51,6 +54,12 @@
 #include "G4SystemOfUnits.hh"
 #include "G4RunManager.hh"
 
+
+ #include "G4LogicalBorderSurface.hh"
+ #include "G4LogicalSkinSurface.hh"
+ #include "G4OpticalSurface.hh"
+ #include "G4ThreeVector.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 DetectorConstruction::DetectorConstruction()
@@ -60,16 +69,25 @@ DetectorConstruction::DetectorConstruction()
 
 	// parameter values of the world
 
-	fWorldSizeX     = 500.*cm;
-	fWorldSizeY     = 500.*cm;
-	fWorldSizeZ     = 500.*cm;
+	fWorldSizeZ     = 1.*cm   + 1*micrometer;
+	fWorldSizeX     = 20.*cm  + 1*micrometer;
+	fWorldSizeY     = 122.*cm + 1*micrometer;
 
 
 	// parameter values of the scintillator
 
 	fScintThickness = 1.  *cm;
-	fScintSizeX     = 20. *cm;
-	fScintSizeY     = 122.*cm;
+	fScintSizeX     = 20.  *cm;
+	fScintSizeY     = 122.  *cm;
+
+ // parameter values of the PMT
+      PMT_dxa = 8*cm;
+       PMT_dxb = 1*cm;
+       PMT_dyb = 20*cm;
+      PMT_dya = 35*cm; 
+      PMT_dz  = 8*cm;
+
+
 
 
 
@@ -96,32 +114,23 @@ void DetectorConstruction::DefineMaterials()
 	// use G4-NIST materials data base
 	//
 	G4NistManager* man = G4NistManager::Instance();
-	fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
-//	fScintMaterial   = man->FindOrBuildMaterial("G4_POLYSTYRENE");
+	fWorldMaterial 	 = man->FindOrBuildMaterial("G4_Galactic");
+	fScintMaterial   = man->FindOrBuildMaterial("G4_POLYSTYRENE");
+	fPMTMaterial     = man->FindOrBuildMaterial("G4_GLASS_LEAD");
+
+
+ 
 
 
 
-
-
-
-	const G4int NUMENTRIES = 9;
-	G4double fScintMaterial_PP[NUMENTRIES] = { 6.6*eV, 6.7*eV, 6.8*eV, 6.9*eV,
-				         7.0*eV, 7.1*eV, 7.2*eV, 7.3*eV, 7.4*eV };
-	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000134, 0.004432,
-						0.053991, 0.241971,
-						0.398942, 0.000134,
-						0.004432, 0.053991,
-						0.241971 };
-	G4double fScintMaterial_SLOW[NUMENTRIES] = { 0.000010, 0.000020,
-				 		0.000030, 0.004000,
-						0.008000, 0.005000,
-						0.020000, 0.001000,
-						0.000010 };
+	const G4int NUMENTRIES = 2;
+	G4double photonEnergy[NUMENTRIES] = {0.1*eV, 10*eV};
+	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000134, 0.004432};
+	G4double fScintMaterial_SLOW[NUMENTRIES] = { 0.000010, 0.000020};
 
 
 
  //***Elements
-
 
 G4Element * fC = man->FindOrBuildElement("C");
 G4Element * fH = man->FindOrBuildElement("H");
@@ -129,15 +138,18 @@ G4Element * fH = man->FindOrBuildElement("H");
 
 	
    //Polystyrene
-   fScintMaterial = new G4Material("Polystyrene", 1.03*g/cm3, 2);
-   fScintMaterial->AddElement(fC, 8);
-   fScintMaterial->AddElement(fH, 8);
+//   fScintMaterial = new G4Material("Polystyrene", 1.03*g/cm3, 2);
+ //  fScintMaterial->AddElement(fC, 8);
+ //  fScintMaterial->AddElement(fH, 8);
 
 
 G4MaterialPropertiesTable* fScintMaterial_MPT = new G4MaterialPropertiesTable();
-	fScintMaterial_MPT->AddProperty("FASTCOMPONENT", fScintMaterial_PP, fScintMaterial_FAST, NUMENTRIES);
-	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", fScintMaterial_PP, fScintMaterial_SLOW, NUMENTRIES);
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 5000./MeV);
+	fScintMaterial_MPT->AddProperty("FASTCOMPONENT", photonEnergy, fScintMaterial_FAST, NUMENTRIES);
+	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
+
+	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 1000./MeV); //10000 
+
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
 	fScintMaterial_MPT->AddConstProperty("SLOWTIMECONSTANT", 10.*ns);
@@ -145,12 +157,34 @@ G4MaterialPropertiesTable* fScintMaterial_MPT = new G4MaterialPropertiesTable();
 	fScintMaterial->SetMaterialPropertiesTable(fScintMaterial_MPT);
 
 
+   G4double refractiveIndex1[] ={1.60, 1.60};
+   G4double absorption[] ={100*cm, 100*cm};   //360*cm
 
 
 
-	// print table
-	//
-	//G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+
+   fScintMaterial_MPT->AddProperty("RINDEX",       photonEnergy, refractiveIndex1, NUMENTRIES);
+   fScintMaterial_MPT->AddProperty("ABSLENGTH",    photonEnergy, absorption,     NUMENTRIES);
+
+
+///// G4_Galattic
+   G4double refractiveIndex2[] ={1.00, 1.00};
+
+  G4MaterialPropertiesTable* fWorldMaterial_MPT = new G4MaterialPropertiesTable();
+  fWorldMaterial_MPT->AddProperty("RINDEX",      photonEnergy, refractiveIndex2, NUMENTRIES);
+  fWorldMaterial->SetMaterialPropertiesTable(fWorldMaterial_MPT);
+
+
+///// glass lead 
+   G4double refractiveIndex3[] ={1.60, 1.60};
+
+  G4MaterialPropertiesTable* fPMTMaterial_MPT = new G4MaterialPropertiesTable();
+  fPMTMaterial_MPT->AddProperty("RINDEX",      photonEnergy, refractiveIndex3, NUMENTRIES);
+  fPMTMaterial->SetMaterialPropertiesTable(fPMTMaterial_MPT);
+
+
+
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -172,7 +206,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 			fWorldSizeX/2,fWorldSizeY/2,fWorldSizeZ/2);       //its size
 
 	fLogicWorld = new G4LogicalVolume(fSolidWorld,                    //its solid
-			fDefaultMaterial,       		          //its material
+			fWorldMaterial,       		          //its material
 			"World");                		          //its name
 
 	fPhysiWorld = new G4PVPlacement(0,                                //no rotation
@@ -200,6 +234,37 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 			fLogicWorld,                                      //its mother volume
 			false,                                            //no boolean operation
 			0);                                               //copy number  
+
+   //     
+   // Shape 2 (PMT 2)
+   //
+  
+//rotation section
+G4ThreeVector pos2 = G4ThreeVector(0, -65*cm, 0);
+ G4RotationMatrix rotm  = G4RotationMatrix();
+ rotm.rotateY(90*deg);
+ rotm.rotateZ(90*deg);
+ G4Transform3D transform = G4Transform3D(rotm,pos2);
+
+ 
+   // Trapezoid shape       
+   fSolidPMT = new G4Trd("PMT",                      //its name
+               0.5*PMT_dxa, 0.5*PMT_dxb,
+               0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+ 
+   fLogicPMT = new G4LogicalVolume(fSolidPMT,         //its solid
+                         fPMTMaterial,          //its material
+                         "PMT");           //its name
+
+   fPhysiPMT = new G4PVPlacement(transform,                       //no rotation
+                    fLogicPMT,             //its logical volume
+                     "PMT",                //its name
+                     fLogicWorld,                //its mother  volume
+                     false,                   //no boolean operation
+                     0,
+                     false) ;                      //copy number
+ 
+
 
 
 	//                                        

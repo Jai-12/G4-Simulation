@@ -85,7 +85,10 @@ void HistoManager::Book()
 	// id = 3
 	analysisManager->CreateH1("myEnergyScint","myEdep in scintillator (MeV)", 100, 0., 1000*MeV/MeV);
 	// id = 4
-	analysisManager->CreateH1("photonNumber","photon number", 150, 4000, 30000);
+	analysisManager->CreateH1("photonsGenerated","photons generated", 150, 1000, 22000);
+	// id = 5
+	analysisManager->CreateH1("photonsCollected","photons collected", 150, 10000, 1000000);
+
 
 
 

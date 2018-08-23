@@ -29,6 +29,7 @@
 //
 //
 #include "PhysicsList.hh"
+#include "DetectorConstruction.hh"
 
 #include "GeneralPhysics.hh"
 #include "EMPhysics.hh"
@@ -56,7 +57,25 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
 	RegisterPhysics( new MuonPhysics("muon"));
 
 	// Optical Physics
-	RegisterPhysics( new OpticalPhysics("optical phyics"));
+	G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics();
+	RegisterPhysics( opticalPhysics );
+
+	opticalPhysics->SetWLSTimeProfile("delta");
+
+	opticalPhysics->SetScintillationYieldFactor(1.0);
+	opticalPhysics->SetScintillationExcitationRatio(0.0);
+
+	//	opticalPhysics->SetMaxNumPhotonsPerStep(100);
+	//	opticalPhysics->SetMaxBetaChangePerStep(10.0);
+
+	//opticalPhysics->SetTrackSecondariesFirst(kCerenkov,true);
+
+
+
+		opticalPhysics->SetTrackSecondariesFirst(kScintillation,true); 
+		opticalPhysics->SetTrackSecondariesFirst(kAbsorption,true); 
+
+
 
 
 }
@@ -68,7 +87,7 @@ PhysicsList::~PhysicsList() {}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void PhysicsList::SetCuts(){
-	//  " G4VUserPhysicsList::SetCutsWithDefaule" method sets
+	//  " G4VUserPhysicsList::SetCutsWithDefault" method sets
 	//   the default cut value for all particle types
 	SetCutsWithDefault();
 }

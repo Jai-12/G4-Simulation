@@ -52,10 +52,11 @@ class EventAction : public G4UserEventAction
 		virtual void  BeginOfEventAction(const G4Event*);
 		virtual void  EndOfEventAction(const G4Event*);
 
-		void AddScint(G4double de, G4double dl, G4int dn) {
+		void AddScint(G4double de, G4double dl, G4int dn1, G4int dn2) {
 						fEnergyScint += de; 
-						fTrackLScint += dl; 
-						fPhotonNumber += dn;};
+						fTrackLScint += dl;
+						fPhotonNumberGen += dn1; 
+						fPhotonNumberCol += dn2;};
 
 	private:
 		RunAction*    fRunAct;
@@ -75,7 +76,9 @@ class EventAction : public G4UserEventAction
 		G4double  myTrackLScint;    	//add comments
 		G4double  myEnergyScint;  	//add comments
 
-		G4int 	  fPhotonNumber;	
+		G4int 	  fPhotonNumberGen;	
+		G4int 	  fPhotonNumberCol;	
+
 
 		G4double  fEnergyScint;
 		G4double  fTrackLScint;

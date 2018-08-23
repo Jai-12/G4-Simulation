@@ -84,6 +84,9 @@ G4double PrimaryGeneratorAction::random_E(){                       // Energy dis
 
 
 G4double PrimaryGeneratorAction::random_X(){ 			   // X distribution
+
+
+
 	G4double r;
 	G4double r_max = 10*cm;
 
@@ -94,6 +97,9 @@ G4double PrimaryGeneratorAction::random_X(){ 			   // X distribution
 
 
 G4double PrimaryGeneratorAction::random_Y(){                       // Y distribution
+
+
+
 	G4double r;
 	G4double r_max = 61*cm;
 
@@ -146,6 +152,11 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 {
+
+	//CLHEP::HepRandom::setTheSeed(time(0)); 
+
+
+
 
 	//particle definition
 	G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();

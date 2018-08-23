@@ -65,7 +65,8 @@ EventAction::EventAction(RunAction* run, HistoManager* histo)
 	p_particleEnergy(0.),
 	myTrackLScint(0.),
 	myEnergyScint(0.),
-	fPhotonNumber(0),
+	fPhotonNumberCol(0.),
+	fPhotonNumberGen(0.),
 	fPrintModulo(0)
 
 {
@@ -87,7 +88,8 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	fTrackLScint  = 0;
 	myTrackLScint = 0;
 	myEnergyScint = 0;
-	fPhotonNumber = 0;
+        fPhotonNumberCol= 0.;
+        fPhotonNumberGen = 0. ;
 
 
 //	evt->GetPrimaryVertex(0)->GetPrimary(0)  ;
@@ -247,7 +249,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
-
+	G4cout << "MYDATA  " <<  fTrackLScint/cm/fPhotonNumberGen << "  " <<   fTrackLScint/cm/fPhotonNumberCol << "  "   <<   fPhotonNumberGen  << "  " << fPhotonNumberCol    << G4endl;
 
 
 
@@ -260,7 +262,9 @@ void EventAction::EndOfEventAction(const G4Event*)
 	fHistoManager->FillHisto(1, fTrackLScint/cm);
 	fHistoManager->FillHisto(2, myTrackLScint/cm);
 	fHistoManager->FillHisto(3, myEnergyScint/MeV);
-	fHistoManager->FillHisto(4, fPhotonNumber);
+	fHistoManager->FillHisto(4, fPhotonNumberGen);
+	fHistoManager->FillHisto(5, fPhotonNumberCol);
+
 
 
 }  
