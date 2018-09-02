@@ -78,27 +78,27 @@ SteppingAction::~SteppingAction()
 
 G4double SteppingAction::myrand(){                      // Second uniform  distribution (from 0 to 1) 
 
-        //generate a pseudo random number in the interval [0;1]
-        G4double r;
-         r =  (   CLHEP::HepRandom::getTheEngine()->flat() );
-        //cout<<"  myrandpos: "<<r<<endl;
-        return r;
- }
+	//generate a pseudo random number in the interval [0;1]
+	G4double r;
+	r =  (   CLHEP::HepRandom::getTheEngine()->flat() );
+	//cout<<"  myrandpos: "<<r<<endl;
+	return r;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
 
- G4double SteppingAction::random_quantum_eff(){                   //
-         G4double x;
-         G4double f;
- 
-         do {
-                 x = (CLHEP::pi/2.) * myrand();
-                 f = (3.*sqrt(3.)/4) * myrand();
-         }while(f > (4)*cos(x)*cos(x)*cos(x)*sin(x));
- 
-         return x;
- }
+G4double SteppingAction::random_quantum_eff(){                   //useless function
+	G4double x;
+	G4double f;
+
+	do {
+		x = 1000 * myrand();
+		f = (3.*sqrt(3.)/4) * myrand();
+	}while(f > 10);
+
+	return x;
+}
 
 
 
@@ -162,6 +162,15 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	{
 		//G4cout << "finSPECTRUM: "<< aStep->GetTrack()->GetTotalEnergy()/eV <<  G4endl;
 		G4cout << "MY_ID  " << aStep->GetTrack()->GetTrackID() << "  " << aStep->GetTrack()->GetTrackStatus() <<G4endl;	
+		G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
+		G4int n_electrons = 0;
+		G4double q_eff = 0;
+		if(ph_energy > 2.06640*eV || ph_energy < 4.13281*eV) q_eff=0.3;
+		if(myrand() < q_eff){ n_electrons = 1;
+			fHistoManager->FillHisto(8,aStep->GetTrack()->GetGlobalTime()/ns);
+		};
+
+		
 		fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
 
 
@@ -232,8 +241,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 		{
 
-			//photons_map[id/cm]=random_quantum_eff();
-			fHistoManager->FillHisto(8,photons_map[id]/cm);
+			fHistoManager->FillHisto(9,photons_map[id]/cm);
 		};
 
 	};

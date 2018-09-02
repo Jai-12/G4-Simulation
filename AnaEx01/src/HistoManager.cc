@@ -93,7 +93,10 @@ void HistoManager::Book()
 	// id = 7
 	analysisManager->CreateH1("Photon time at photocatode","photon time at photocatode", 100, 0, 20*ns/ns);
 	// id = 8
+	analysisManager->CreateH1("Electron time at photocatode","electron time at photocatode", 100, 0, 20*ns/ns);
+	// id = 9 
 	analysisManager->CreateH1("photons track length","photons track length", 100, 0,500*cm/cm);
+
 
 
 

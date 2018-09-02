@@ -125,9 +125,9 @@ void DetectorConstruction::DefineMaterials()
 
 	const G4int NUMENTRIES =12;
 	G4double photonEnergy[NUMENTRIES]  = //maximum at 418 nm = 3eV
-	{ 1.1*eV, 1.5*eV, 2.3*eV, 2.5*eV,
+	{ 1.0*eV, 2.5*eV, 2.7*eV, 2.8*eV,
 	3.1*eV,3.2*eV,3.5*eV,3.9*eV,
-		4.1*eV, 4.2*eV, 4.6*eV, 5*eV };
+		4.1*eV,4.3*eV, 4.5*eV, 5.7*eV };
 
 
 	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000100, 0.000100, 0.000100, 0.000100, 
