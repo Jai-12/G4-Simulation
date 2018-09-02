@@ -50,7 +50,6 @@ class SteppingAction : public G4UserSteppingAction
 		SteppingAction(DetectorConstruction*, EventAction*, HistoManager*);
 		virtual ~SteppingAction();
 		G4double myrand();   
-		G4double random_quantum_eff();  
 		virtual void UserSteppingAction(const G4Step*);
 
 
