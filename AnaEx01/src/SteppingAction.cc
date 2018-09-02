@@ -219,20 +219,34 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 	}
 
+//////////////////  COMPUTING THE TRACK LENGTH OF ALL PHOTONS  /////////////////////////
+
+//******************G4TrackStatus LEGEND***********************
+     // Case 0: Continue the tracking
+     // Case 1: Invoke active rest physics processes and
+     //   and kill the current track afterward
+     // Case 2: Kill the current track
+
+
+     // Case 3: Kill the current track and also associated
+     //    secondaries.
+     // Case 4: Suspend the current track
+
+     // Case 5: Postpones the tracking of thecurrent track 
+     // to the next event.
+
 
 	G4int id = aStep->GetTrack()->GetTrackID(); 
-	G4int status = aStep->GetTrack()->GetTrackStatus(); 
+	G4int status = aStep->GetTrack()->GetTrackStatus();  
 	G4double photo_stepl = aStep->GetStepLength();
 
 	if (ParticleName == "opticalphoton" ){
+		//sum all steps lengths of the same track 
+		photons_map[id] += photo_stepl; 
 
-		photons_map[id] = photons_map[id] + photo_stepl;
+		//fill the histo only if the photon is absorbed in the scintillator 
+		if(status==2  && final_volume == fDetector->GetScint())  	{
 
-		if(status==2  && final_volume == fDetector->GetScint()) 
-
-		{
-
-			//photons_map[id/cm]=random_quantum_eff();
 			fHistoManager->FillHisto(8,photons_map[id]/cm);
 		};
 
@@ -242,5 +256,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 	fEventAction->AddScint(edep,stepl,photons_generated, photons_collected);
 
+	
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
