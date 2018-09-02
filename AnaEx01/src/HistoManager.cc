@@ -89,7 +89,7 @@ void HistoManager::Book()
 	// id = 5
 	analysisManager->CreateH1("photonsCollected","photons collected", 150, 0, 1000000);
 	// id = 6
-	analysisManager->CreateH1("Generated Photon Energy","Generated Photon Energy", 100, 0, 10*eV/eV);
+	analysisManager->CreateH1("Initial Photon Energy","Initial Photon Energy", 100, 6, 8*eV/eV);
 	// id = 7
 	analysisManager->CreateH1("Photon time at photocatode","photon time at photocatode", 100, 0, 20*ns/ns);
 	// id = 8
