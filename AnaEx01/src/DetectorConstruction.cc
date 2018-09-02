@@ -123,21 +123,22 @@ void DetectorConstruction::DefineMaterials()
 	fPMTMaterial     = man->FindOrBuildMaterial("G4_GLASS_LEAD");
 
 
-	const G4int NUMENTRIES =12;
-	G4double photonEnergy[NUMENTRIES]  = //maximum at 418 nm = 3eV
-	{ 1.1*eV, 1.5*eV, 2.3*eV, 2.5*eV,
-	3.1*eV,3.2*eV,3.5*eV,3.9*eV,
-		4.1*eV, 4.2*eV, 4.6*eV, 5*eV };
-
-
-	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000100, 0.000100, 0.000100, 0.000100, 
-	0.000100, 0.000100, 0.000100, 0.000100, 
-		0.000100, 0.000100, 0.000100, 0.000100}; 
-
-	G4double fScintMaterial_SLOW[NUMENTRIES] = { 0.000010, 0.000010,0.000010,0.000010,
-		0.0000100, 0.0000100, 0.0000100, 0.0000100, 
-		0.0000100, 0.0000100, 0.0000100, 0.0000100};
-
+          //maximum at 418 nm = 3eV
+         const G4int NUMENTRIES = 9;
+         G4double photonEnergy[NUMENTRIES] = { 6.6*eV, 6.7*eV, 6.8*eV, 6.9*eV,
+                 7.0*eV, 7.1*eV, 7.2*eV, 7.3*eV, 7.4*eV };
+         G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000134, 0.004432,
+                 0.053991, 0.241971,
+                 0.398942, 0.000134,
+                 0.004432, 0.053991,
+                 0.241971 };
+ //      G4double fScintMaterial_SLOW[NUMENTRIES] = { 0.000010, 0.000020,
+ //              0.000030, 0.004000,
+ //              0.008000, 0.005000,
+ //              0.020000, 0.001000,
+ //              0.000010 };
+ 
+ 
 
 	//***Elements
 
@@ -154,7 +155,7 @@ void DetectorConstruction::DefineMaterials()
 
 	G4MaterialPropertiesTable* fScintMaterial_MPT = new G4MaterialPropertiesTable();
 	fScintMaterial_MPT->AddProperty("FASTCOMPONENT", photonEnergy, fScintMaterial_FAST, NUMENTRIES);
-	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
+//	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
 	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
 	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 200000./MeV); //10000 
@@ -167,10 +168,10 @@ void DetectorConstruction::DefineMaterials()
 
 
 	G4double refractiveIndex1[] ={1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
-		1.6, 1.6, 1.6, 1.6
+		1.6
 	};
 	G4double absorption[] = {100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
-		100*cm, 100*cm, 100*cm, 100*cm
+		100*cm
 
 	};//*cm0*cm
 
@@ -184,10 +185,10 @@ void DetectorConstruction::DefineMaterials()
 
 	///// glass lead 
 	G4double refractiveIndex4[] ={1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
-		1.6, 1.6, 1.6, 1.6
+		1.6
 	};
 	G4double absorption4[] = {0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
-		0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm};
+		0.1*cm};
 
 	G4MaterialPropertiesTable* fPMTMaterial_MPT = new G4MaterialPropertiesTable();
 	fPMTMaterial_MPT->AddProperty("RINDEX",   photonEnergy, refractiveIndex4, NUMENTRIES);
@@ -199,7 +200,7 @@ void DetectorConstruction::DefineMaterials()
 
 	G4MaterialPropertiesTable* fWorldMaterial_MPT = new G4MaterialPropertiesTable();
 	G4double refractiveIndex3[] ={1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-		1.0, 1.0, 1.0, 1.0
+		1.0
 	};
 
 
