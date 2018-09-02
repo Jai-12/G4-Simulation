@@ -84,22 +84,6 @@ G4double SteppingAction::myrand(){                      // Second uniform  distr
         //cout<<"  myrandpos: "<<r<<endl;
         return r;
  }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-
-
- G4double SteppingAction::random_quantum_eff(){                   //
-         G4double x;
-         G4double f;
- 
-         do {
-                 x = (CLHEP::pi/2.) * myrand();
-                 f = (3.*sqrt(3.)/4) * myrand();
-         }while(f > (4)*cos(x)*cos(x)*cos(x)*sin(x));
- 
-         return x;
- }
-
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
