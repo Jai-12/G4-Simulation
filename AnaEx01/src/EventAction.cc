@@ -249,7 +249,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
-	G4cout << "MYDATA  " <<  fTrackLScint/cm/fPhotonNumberGen << "  " <<   fTrackLScint/cm/fPhotonNumberCol << "  "   <<   fPhotonNumberGen  << "  " << fPhotonNumberCol    << G4endl;
+	G4cout << "MYDATA  " <<  fTrackLScint/cm/fPhotonNumberGen << "  " <<  fPhotonNumberGen  << "  " << fPhotonNumberCol    << G4endl;
 
 
 

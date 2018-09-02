@@ -36,24 +36,29 @@
 
 #include "globals.hh"
 #include "G4UserSteppingAction.hh"
+#include <map>
 
 class DetectorConstruction;
 class EventAction;
+class HistoManager;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class SteppingAction : public G4UserSteppingAction
 {
 	public:
-		SteppingAction(DetectorConstruction*, EventAction*);
+		SteppingAction(DetectorConstruction*, EventAction*, HistoManager*);
 		virtual ~SteppingAction();
-
+		G4double myrand();   
+		G4double random_quantum_eff();  
 		virtual void UserSteppingAction(const G4Step*);
+
 
 	private:
 		DetectorConstruction* fDetector;
 		EventAction*          fEventAction;  
-
+		HistoManager* 	      fHistoManager;
+		std::map<G4int, G4double> photons_map;
 
 
 };
