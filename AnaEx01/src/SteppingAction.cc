@@ -78,28 +78,12 @@ SteppingAction::~SteppingAction()
 
 G4double SteppingAction::myrand(){                      // Second uniform  distribution (from 0 to 1) 
 
-	//generate a pseudo random number in the interval [0;1]
-	G4double r;
-	r =  (   CLHEP::HepRandom::getTheEngine()->flat() );
-	//cout<<"  myrandpos: "<<r<<endl;
-	return r;
-}
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-
-
-G4double SteppingAction::random_quantum_eff(){                   //useless function
-	G4double x;
-	G4double f;
-
-	do {
-		x = 1000 * myrand();
-		f = (3.*sqrt(3.)/4) * myrand();
-	}while(f > 10);
-
-	return x;
-}
-
+        //generate a pseudo random number in the interval [0;1]
+        G4double r;
+         r =  (   CLHEP::HepRandom::getTheEngine()->flat() );
+        //cout<<"  myrandpos: "<<r<<endl;
+        return r;
+ }
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -127,81 +111,30 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 		GetParticleDefinition()->GetParticleName(); 
 
 
-	// collect energy and track length step by step
+//****************** COLLECT ENERY AND TRACK LENGTH OF MUONS STEP BY STEP *******************
+	
 	G4double edep  = 0;
 	G4double stepl = 0;
 
-	if (ParticleName == "opticalphoton" &&  init_volume == fDetector->GetScint()) {
+/*	if (ParticleName == "mu+" &&  init_volume == fDetector->GetScint()) {
 		edep  = aStep->GetTotalEnergyDeposit();
 		stepl = aStep->GetStepLength();
 	};
-
-
-	// count the optical photons that exit the Scintillator 
-	// ATTENTION: in the DetectorConstruction class you have to set the world sizes correctly to make it work 	
-	G4int photons_collected = 0;		
-	if (ParticleName == "opticalphoton" //&& !( 
-		/*     		  aStep->GetPostStepPoint()->GetPosition().getZ()<0.5*cm
-				  &&  aStep->GetPostStepPoint()->GetPosition().getZ()>-0.5*cm
-				  &&  aStep->GetPostStepPoint()->GetPosition().getX()<10*cm
-				  &&  aStep->GetPostStepPoint()->GetPosition().getX()>-10*cm
-				  &&  aStep->GetPostStepPoint()->GetPosition().getY()<61*cm
-				  &&  aStep->GetPostStepPoint()->GetPosition().getY()>-61*cm) 
-
-				  && (  (aStep->GetPreStepPoint()->GetPosition().getZ()==0.5*cm
-				  ||  aStep->GetPreStepPoint()->GetPosition().getZ()==-0.5*cm ) && (
-				  aStep->GetPreStepPoint()->GetPosition().getX()==10*cm
-				  ||  aStep->GetPreStepPoint()->GetPosition().getX()==-10*cm ) && (
-				  aStep->GetPreStepPoint()->GetPosition().getY()==61*cm 
-				  ||  aStep->GetPreStepPoint()->GetPosition().getY()==-61*cm )
-				  )	*/
-			//&& init_volume == fDetector->GetScint() 
-			&&   final_volume == fDetector->GetPMT()  &&   aStep->GetTrack()->GetTrackStatus()==2) // "2" means track killed
-
-
-	{
-		//G4cout << "finSPECTRUM: "<< aStep->GetTrack()->GetTotalEnergy()/eV <<  G4endl;
-		G4cout << "MY_ID  " << aStep->GetTrack()->GetTrackID() << "  " << aStep->GetTrack()->GetTrackStatus() <<G4endl;	
-		G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
-		G4int n_electrons = 0;
-		G4double q_eff = 0;
-		if(ph_energy > 2.06640*eV || ph_energy < 4.13281*eV) q_eff=0.3;
-		if(myrand() < q_eff){ n_electrons = 1;
-			fHistoManager->FillHisto(8,aStep->GetTrack()->GetGlobalTime()/ns);
-		};
-
-		
-		fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
-
-
-		photons_collected = 1;		
-	};
-
-
-	G4int photons_generated = 0;
+*/
+//*************************** COMPUTING INITIAL PHOTON ENERGY and PHOTON NUMBER  *************************
+G4int photons_generated = 0;
 	G4double photon_energy = 0;
 
-	if(1/*init_volume == fDetector->GetScint()*/)
-
-
 	{
-
 		// define a vector of secondaries
 		const std::vector<const G4Track*>* secondaries = 
 			aStep->GetSecondaryInCurrentStep(); 
 
-
-
-
-		// get the number of photon generated in the current step	
-		// I CAN DO IT LIKE THIS:
-
-		// Actually here I am assuming that all the secondaries generated from muon are optical photons
+		// Actually here I am assuming that all the secondaries generated from muon are 
+		//		optical photons (while they might be electrons)
 		// For instance I am negletting all the optical photons generated from secondary ionizations
-		// This is mainly done in order to reduce the computing time   
-		//	if (/*ParticleName == "mu+" &&*/ secondaries->size()>0) {photons_generated = secondaries->size();};
-
-		// OR I CAN DO IT THIS WA
+		// This is done in order to reduce the computing time.
+		
 		if (secondaries->size()>0) {
 			for(unsigned int i=0; i<secondaries->size(); ++i) {
 				if (secondaries->at(i)->GetParentID()>0) {
@@ -227,28 +160,73 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 
 	}
-
-
+//////////////////  COMPUTING THE TRACK LENGTH of PHOTONS  /////////////////////////
+/*
 	G4int id = aStep->GetTrack()->GetTrackID(); 
-	G4int status = aStep->GetTrack()->GetTrackStatus(); 
+	G4int status = aStep->GetTrack()->GetTrackStatus();  
 	G4double photo_stepl = aStep->GetStepLength();
 
 	if (ParticleName == "opticalphoton" ){
+		//sum all steps lengths of the same track 
+		photons_map[id] += photo_stepl; 
 
-		photons_map[id] = photons_map[id] + photo_stepl;
+		//fill the histo only if the photon is absorbed in the scintillator 
+		if(status==2  && final_volume == fDetector->GetScint())  {  //status = 2 means photon absorbed
 
-		if(status==2  && final_volume == fDetector->GetScint()) 
-
-		{
-
-			fHistoManager->FillHisto(9,photons_map[id]/cm);
+			fHistoManager->FillHisto(8,photons_map[id]/cm);
 		};
 
 	};
 
+*/
+//***  COUNTING PHOTONS COLLECTED BY THE PHOTOCATHODE, THEIR ARRIVAL TIME, and THE ELECTRONS PRODUCED)****
+	
+	
+	//******************G4TrackStatus LEGEND***********************
+     // Case 0: Continue the tracking
+     // Case 1: Invoke active rest physics processes and
+     //   and kill the current track afterward
+     // Case 2: Kill the current track
 
 
-	fEventAction->AddScint(edep,stepl,photons_generated, photons_collected);
+     // Case 3: Kill the current track and also associated
+     //    secondaries.
+     // Case 4: Suspend the current track
 
+     // Case 5: Postpones the tracking of thecurrent track 
+     // to the next event.
+	
+	
+       n_electrons = 0;
+       photons_collected = 0;
+	
+	if (ParticleName == "opticalphoton" &&
+	        final_volume == fDetector->GetPMT()  &&  
+		aStep->GetTrack()->GetTrackStatus()==2) // "2" means track killed
+	{
+
+		 G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
+                 G4double q_eff = 0;
+                 if(ph_energy > 0.06640*eV && ph_energy < 3.5*eV) q_eff=1;//real photocathode range: 2.1*eV -4.1*eV
+                 if(myrand() < q_eff){ n_electrons = 1 ;
+                         fHistoManager->FillHisto(8,ph_energy/eV);
+                 };
+ 
+
+		
+	//	fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
+		photons_collected = 1;		
+	};
+
+
+//******************  MOLTIPLICATION SECTION    ***************
+	
+	
+//////////////////// ADDING QUANTITIES of THE CURRENT STEP  //////////////////////////
+//G4cout << " ELECTRONS: " <<n_electrons << G4endl;
+	fEventAction->AddScint(edep,stepl,photons_generated,photons_collected,n_electrons);
+
+	
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

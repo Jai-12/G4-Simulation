@@ -124,25 +124,25 @@ void DetectorConstruction::DefineMaterials()
 
 
 	 //maximum at 418 nm = 3eV
-	const G4int NUMENTRIES = 9;
-	G4double photonEnergy[NUMENTRIES] = { 6.6*eV, 6.7*eV, 6.8*eV, 6.9*eV,
-		7.0*eV, 7.1*eV, 7.2*eV, 7.3*eV, 7.4*eV };
-	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000134, 0.004432,
-		0.053991, 0.241971,
-		0.398942, 0.000134,
-		0.004432, 0.053991,
-		0.241971 };
-//	G4double fScntMaterial_SLOW[NUMENTRIES] = { 0.000010, 0.000020,
-//		0.000030, 0.004000,
-//		0.008000, 0.005000,
-//		0.020000, 0.001000,
-//		0.000010 };
+	const G4int NUMENTRIES = 32;
+ G4double photonEnergy[NUMENTRIES] =
+            { 2.034*eV, 2.068*eV, 2.103*eV, 2.139*eV,
+               2.177*eV, 2.216*eV, 2.256*eV, 2.298*eV,
+               2.341*eV, 2.386*eV, 2.433*eV, 2.481*eV,
+               2.532*eV, 2.585*eV, 2.640*eV, 2.697*eV,
+               2.757*eV, 2.820*eV, 2.885*eV, 2.954*eV,
+               3.026*eV, 3.102*eV, 3.181*eV, 3.265*eV,
+               3.377*eV, 3.511*eV, 3.677*eV, 3.811*eV,
+               3.966*eV, 4.144*eV, 4.260*eV, 4.390*eV };
 
 
 
-
-
-
+	G4double fScintMaterial_FAST[NUMENTRIES] = { 0.000034, 0.000332,
+		0.000691, 0.001071,0.003000,0.006000,0.009000,0.010000,
+		0.060000, 0.120000,0.240000,0.480000,0.65000, 0.640000,
+		0.630000, 0.570000,0.510000,0.460000,0.400000,0.410000,
+		0.450000, 0.400000,0.380000,0.330000,0.290000,0.250000,
+		0.230000, 0.190000,0.130000,0.080000,0.010000,0.007000};
 
 
 
@@ -174,10 +174,15 @@ void DetectorConstruction::DefineMaterials()
 
 
 	G4double refractiveIndex1[] ={1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
-		1.6
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
 	G4double absorption[] = {100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
-		100*cm
+			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
+			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
+			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm
 
 	};//*cm0*cm
 
@@ -190,11 +195,18 @@ void DetectorConstruction::DefineMaterials()
 
 
 	///// glass lead 
+	
 	G4double refractiveIndex4[] ={1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
-		1.6
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
+		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
 	G4double absorption4[] = {0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
-		0.1*cm};
+			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
+			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
+			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm
+};
 
 	G4MaterialPropertiesTable* fPMTMaterial_MPT = new G4MaterialPropertiesTable();
 	fPMTMaterial_MPT->AddProperty("RINDEX",   photonEnergy, refractiveIndex4, NUMENTRIES);
@@ -206,7 +218,10 @@ void DetectorConstruction::DefineMaterials()
 
 	G4MaterialPropertiesTable* fWorldMaterial_MPT = new G4MaterialPropertiesTable();
 	G4double refractiveIndex3[] ={1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-		1.0
+		1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+		1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+		1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+		1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
 	};
 
 
