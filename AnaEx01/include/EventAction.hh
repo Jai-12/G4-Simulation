@@ -79,10 +79,13 @@ class EventAction : public G4UserEventAction
 		G4double  myTrackLScint;    	//add comments
 		G4double  myEnergyScint;  	//add comments
 
-		G4int 	  fPhotonNumberGen;	
-		G4int 	  fPhotonNumberCol;	
+		long 	  fPhotonNumberGen;	
+		long	  fPhotonNumberCol;	
 
-		G4int fElectronsGenerated;		
+		long  finalElectronsNumber_A;
+		long  finalElectronsNumber_B;
+
+		long  fElectronsGenerated;		
 
 		G4double  fEnergyScint;
 		G4double  fTrackLScint;

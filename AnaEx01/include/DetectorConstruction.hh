@@ -69,6 +69,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 		const G4VPhysicalVolume* GetWorld()  	   {return fPhysiWorld;};           
 		const G4VPhysicalVolume* GetScint()        {return fPhysiScint;};
 		const G4VPhysicalVolume* GetPMT()          {return fPhysiPMT;};
+		const G4VPhysicalVolume* GetPMT1()         {return fPhysiPMT1;};
 		const G4VPhysicalVolume* GetWrapping()     {return fPhysiWrapping;};
 
 
@@ -109,9 +110,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		G4VPhysicalVolume* fPhysiWrapping;    //pointer to the physical wrapping
 
-		G4Trd*             fSolidPMT;    //pointer to the solid PTM
-		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT
-		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT
+		G4Trd*             fSolidPMT1;    //pointer to the solid PTM 1
+		G4LogicalVolume*   fLogicPMT1;    //pointer to the logical PMT 1
+		G4VPhysicalVolume* fPhysiPMT1;    //pointer to the physical PMT 1
+
+		G4Trd*             fSolidPMT;    //pointer to the solid PTM 2
+		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT 2
+		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT 
 
 
 

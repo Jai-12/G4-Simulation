@@ -71,9 +71,9 @@ DetectorConstruction::DetectorConstruction()
 
 	// parameter values of the world
 
-	fWorldSizeZ     =1.*cm   + 1*micrometer;
-	fWorldSizeX     =20.*cm  + 1*micrometer;
-	fWorldSizeY     =122.*cm + 1*micrometer;
+	fWorldSizeZ     =1.*cm   + 1*meter;
+	fWorldSizeX     =20.*cm  + 1*meter;
+	fWorldSizeY     =122.*cm + 1*meter;
 
 
 	// parameter values of the scintillator
@@ -112,9 +112,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void DetectorConstruction::DefineMaterials()
-{ 
-	// use G4-NIST materials data base
+void DetectorConstruction::DefineMaterials(){     } 
+
+G4VPhysicalVolume* DetectorConstruction::ConstructScint()
+{
+
+// use G4-NIST materials data base
 	//
 	G4NistManager* man = G4NistManager::Instance();
 	fWorldMaterial 	 = man->FindOrBuildMaterial("G4_Galactic");
@@ -164,7 +167,7 @@ void DetectorConstruction::DefineMaterials()
 //	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
 	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 200000./MeV); //10000 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 100000./MeV); //10000 
 
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
@@ -179,14 +182,12 @@ void DetectorConstruction::DefineMaterials()
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
-	G4double absorption[] = {100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
-			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
-			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm,
-			100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm, 100*cm
+	G4double absorption[] = {360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm
 
-	};//*cm0*cm
-
-
+	};
 
 
 	fScintMaterial_MPT->AddProperty("RINDEX",       photonEnergy, refractiveIndex1, NUMENTRIES);
@@ -194,7 +195,7 @@ void DetectorConstruction::DefineMaterials()
 
 
 
-	///// glass lead 
+	///// light guide 
 	
 	G4double refractiveIndex4[] ={1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
@@ -202,10 +203,10 @@ void DetectorConstruction::DefineMaterials()
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
-	G4double absorption4[] = {0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
-			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
-			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm,
-			0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm, 0.1*cm
+	G4double absorption4[] = {0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer,
+			0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer,
+			0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer,
+			0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer, 0.1*micrometer
 };
 
 	G4MaterialPropertiesTable* fPMTMaterial_MPT = new G4MaterialPropertiesTable();
@@ -237,12 +238,7 @@ void DetectorConstruction::DefineMaterials()
 
 
 
-}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-G4VPhysicalVolume* DetectorConstruction::ConstructScint()
-{
 
 	// Clean old geometry, if any
 	//
@@ -310,7 +306,37 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 		false,                                            //no boolean operation
 		0);                                               //copy number  
 	 */
+	//     
+	// Shape 1 (PMT 1)
+	//
 
+	//rotation section
+	G4ThreeVector pos1 = G4ThreeVector(0, +69*cm, 0);
+	G4RotationMatrix rotm1  = G4RotationMatrix();
+	rotm1.rotateY(270*deg);
+	rotm1.rotateZ(90*deg);
+	G4Transform3D transform1 = G4Transform3D(rotm1,pos1);
+
+
+	// Trapezoid shape       
+	fSolidPMT1 = new G4Trd("PMT",                      //its name
+			0.5*PMT_dxa, 0.5*PMT_dxb,
+			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+
+	fLogicPMT1 = new G4LogicalVolume(fSolidPMT1,         //its solid
+			fPMTMaterial,          //its material
+			"PMT");           //its name
+
+	fPhysiPMT1 = new G4PVPlacement(transform1,      // rotation
+			fLogicPMT1,             //its logical volume
+			"PMT",                //its name
+			fLogicScint,                //its mother  volume
+			false,                   //no boolean operation
+			0,
+			false) ;                      //copy number
+
+
+ 
 	//     
 	// Shape 2 (PMT 2)
 	//
@@ -332,13 +358,64 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 			fPMTMaterial,          //its material
 			"PMT");           //its name
 
-	fPhysiPMT = new G4PVPlacement(transform,                       //no rotation
+	fPhysiPMT = new G4PVPlacement(transform,                    // rotation
 			fLogicPMT,             //its logical volume
 			"PMT",                //its name
 			fLogicScint,                //its mother  volume
 			false,                   //no boolean operation
 			0,
 			false) ;                      //copy number
+
+
+
+   //OpticalSurface  
+   G4OpticalSurface* opSurface = new G4OpticalSurface("Surface");
+   opSurface->SetType(dielectric_metal);
+   opSurface->SetFinish(polished);
+   opSurface->SetModel(glisur);
+
+
+   G4LogicalBorderSurface* Surface = new  
+	G4LogicalBorderSurface("Surface",fPhysiScint,fPhysiWorld,opSurface);
+
+   //opticalSurface = dynamic_cast <G4OpticalSurface*>
+   //    (Surface->GetSurface(bubbleAir_log)->GetSurfaceProperty());
+   // if (opticalSurface) opticalSurface->DumpInfo();
+
+             
+   G4double reflectivity[NUMENTRIES] = { 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0 };
+ 
+
+   G4double efficiency[NUMENTRIES]   = { 1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0, 1.0 };
+ 
+
+ 
+  G4MaterialPropertiesTable *myST2 = new G4MaterialPropertiesTable();
+ 
+  myST2->AddProperty("REFLECTIVITY", photonEnergy, reflectivity, NUMENTRIES);
+   myST2->AddProperty("EFFICIENCY",  photonEnergy, efficiency,   NUMENTRIES);
+    G4cout << "Air Surface G4MaterialPropertiesTable" << G4endl;
+   myST2->DumpTable();
+ 
+   opSurface->SetMaterialPropertiesTable(myST2);
+
+
+
+
 
 
 	//                                        

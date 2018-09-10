@@ -143,14 +143,14 @@ G4int photons_generated = 0;
 						if (secondaries->at(i)->GetCreatorProcess()->GetProcessName()
 								== "Scintillation"){photons_generated++;
 							photon_energy = secondaries->at(i)->GetTotalEnergy();
-							fHistoManager->FillHisto(6,photon_energy/eV);
+				//			fHistoManager->FillHisto(6,photon_energy/eV);
 
 						}
 						if (secondaries->at(i)->GetCreatorProcess()->GetProcessName()
 								== "Cerenkov"){photons_generated++;
 
 							photon_energy = secondaries->at(i)->GetTotalEnergy();
-							fHistoManager->FillHisto(6,photon_energy/eV);
+				//			fHistoManager->FillHisto(6,photon_energy/eV);
 
 						}
 					}   
@@ -161,7 +161,6 @@ G4int photons_generated = 0;
 
 	}
 //////////////////  COMPUTING THE TRACK LENGTH of PHOTONS  /////////////////////////
-/*
 	G4int id = aStep->GetTrack()->GetTrackID(); 
 	G4int status = aStep->GetTrack()->GetTrackStatus();  
 	G4double photo_stepl = aStep->GetStepLength();
@@ -173,16 +172,17 @@ G4int photons_generated = 0;
 		//fill the histo only if the photon is absorbed in the scintillator 
 		if(status==2  && final_volume == fDetector->GetScint())  {  //status = 2 means photon absorbed
 
-			fHistoManager->FillHisto(8,photons_map[id]/cm);
+			fHistoManager->FillHisto(9,photons_map[id]/cm);
 		};
 
 	};
 
-*/
 //***  COUNTING PHOTONS COLLECTED BY THE PHOTOCATHODE, THEIR ARRIVAL TIME, and THE ELECTRONS PRODUCED)****
+/////////////////////                      PMT 1                            ///////////////////////	
+
+
 	
-	
-	//******************G4TrackStatus LEGEND***********************
+	/// ******************G4TrackStatus LEGEND***********************
      // Case 0: Continue the tracking
      // Case 1: Invoke active rest physics processes and
      //   and kill the current track afterward
@@ -196,9 +196,33 @@ G4int photons_generated = 0;
      // Case 5: Postpones the tracking of thecurrent track 
      // to the next event.
 	
+       n_electrons_PMT1 = 0;
+       photons_collected_PMT1 = 0;
 	
-       n_electrons = 0;
-       photons_collected = 0;
+	if (ParticleName == "opticalphoton" &&
+	        final_volume == fDetector->GetPMT1()  &&  
+		aStep->GetTrack()->GetTrackStatus()==2) // "2" means track killed
+	{
+
+		 G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
+                 G4double q_eff = 0;
+                 if(ph_energy > 0.06640*eV && ph_energy < 9.5*eV) q_eff=1;//real photocathode range: 2.1*eV -4.1*eV
+                 if(myrand() < q_eff){ n_electrons_PMT1 = 1 ;
+  //                       fHistoManager->FillHisto(8,ph_energy/eV);
+                 };
+ 
+
+		
+//		fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
+		photons_collected_PMT1 = 1;		
+	};
+
+
+//***  COUNTING PHOTONS COLLECTED BY THE PHOTOCATHODE, THEIR ARRIVAL TIME, and THE ELECTRONS PRODUCED)****
+/////////////////////                      PMT 2                            ///////////////////////	
+	
+       n_electrons_PMT2 = 0;
+       photons_collected_PMT2 = 0;
 	
 	if (ParticleName == "opticalphoton" &&
 	        final_volume == fDetector->GetPMT()  &&  
@@ -207,24 +231,26 @@ G4int photons_generated = 0;
 
 		 G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
                  G4double q_eff = 0;
-                 if(ph_energy > 0.06640*eV && ph_energy < 3.5*eV) q_eff=1;//real photocathode range: 2.1*eV -4.1*eV
-                 if(myrand() < q_eff){ n_electrons = 1 ;
+
+	         fHistoManager->FillHisto(6,ph_energy/eV);
+
+
+                 if(ph_energy > 0.06640*eV && ph_energy < 3*eV) q_eff=0.3;//real photocathode range: 2.1*eV -4.1*eV
+                 if(myrand() < q_eff){ n_electrons_PMT2 = 1 ;
                          fHistoManager->FillHisto(8,ph_energy/eV);
                  };
  
 
 		
-	//	fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
-		photons_collected = 1;		
+		fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
+		photons_collected_PMT2 = 1;		
 	};
 
 
-//******************  MOLTIPLICATION SECTION    ***************
-	
-	
+
 //////////////////// ADDING QUANTITIES of THE CURRENT STEP  //////////////////////////
 //G4cout << " ELECTRONS: " <<n_electrons << G4endl;
-	fEventAction->AddScint(edep,stepl,photons_generated,photons_collected,n_electrons);
+	fEventAction->AddScint(edep,stepl,photons_generated, photons_collected_PMT2,n_electrons_PMT2);
 
 	
 }

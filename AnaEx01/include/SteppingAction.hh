@@ -60,8 +60,11 @@ class SteppingAction : public G4UserSteppingAction
 		HistoManager* 	      fHistoManager;
 		std::map<G4int, G4double> photons_map;
 		G4int photons_generated;
-		G4int photons_collected;
-		G4int n_electrons;
+		G4int photons_collected_PMT1;
+		G4int n_electrons_PMT1;
+		G4int photons_collected_PMT2;
+		G4int n_electrons_PMT2;
+
 
 };
 

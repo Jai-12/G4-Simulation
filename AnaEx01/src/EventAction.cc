@@ -68,6 +68,8 @@ EventAction::EventAction(RunAction* run, HistoManager* histo)
 	fPhotonNumberCol(0.),
 	fPhotonNumberGen(0.),
 	fElectronsGenerated(0.),	
+	finalElectronsNumber_A(0.),
+	finalElectronsNumber_B(0.),
 	fPrintModulo(0)
 
 {
@@ -92,7 +94,8 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
         fPhotonNumberCol= 0.;
         fPhotonNumberGen = 0. ;
 	fElectronsGenerated = 0.;
-
+	finalElectronsNumber_A=0.;
+	finalElectronsNumber_B=0.;
 //	evt->GetPrimaryVertex(0)->GetPrimary(0)  ;
 
 
@@ -255,6 +258,30 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
+ //******************  MOLTIPLICATION SECTION    ***************
+ 
+ 
+ 
+ G4double totalGain = 1e7 ;
+ G4int numberOfDinodes = 12;
+ G4double idealGainPerDinode = pow(totalGain, pow(numberOfDinodes,-1));
+	
+fElectronsGenerated = 8230;
+
+finalElectronsNumber_A = fElectronsGenerated;
+finalElectronsNumber_B = fElectronsGenerated* /*CLHEP::RandPoissonQ::shoot(*/totalGain;//);
+
+
+for(int n=0; n < numberOfDinodes; n++){
+
+	G4double gainForThisDinode =  /*CLHEP::RandPoissonQ::shoot(*/ idealGainPerDinode;//);  // (mean=idealGainPerDinode)
+	
+finalElectronsNumber_A  = gainForThisDinode*finalElectronsNumber_A ;
+
+ 
+ };
+ 
+
 
 
 	//fill histograms
@@ -266,6 +293,9 @@ void EventAction::EndOfEventAction(const G4Event*)
 	fHistoManager->FillHisto(4, fPhotonNumberGen);
 	fHistoManager->FillHisto(5, fPhotonNumberCol);
 	fHistoManager->FillHisto(10, fElectronsGenerated);	
+	fHistoManager->FillHisto(11, finalElectronsNumber_A);	
+	fHistoManager->FillHisto(12, finalElectronsNumber_B);	
+	
 
 
 }  
