@@ -30,7 +30,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 #include "DetectorConstruction.hh"
 
 #include "G4Material.hh"
@@ -61,8 +61,6 @@
 #include "G4LogicalSkinSurface.hh"
 #include "G4OpticalSurface.hh"
 #include "G4ThreeVector.hh"
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 DetectorConstruction::DetectorConstruction()
 	:G4VUserDetectorConstruction(),fScintMaterial(0),
@@ -290,6 +288,37 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 		0);                                               //copy number  
 	 */
 
+//     
+	// Shape 1 (PMT 1)
+	//
+
+	//rotation section
+	G4ThreeVector pos1 = G4ThreeVector(0, +69*cm, 0);
+	G4RotationMatrix rotm1  = G4RotationMatrix();
+	rotm1.rotateY(270*deg);
+	rotm1.rotateZ(90*deg);
+	G4Transform3D transform1 = G4Transform3D(rotm1,pos1);
+
+
+	// Trapezoid shape       
+	fSolidPMT1 = new G4Trd("PMT",                      //its name
+			0.5*PMT_dxa, 0.5*PMT_dxb,
+			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+
+	fLogicPMT1 = new G4LogicalVolume(fSolidPMT1,         //its solid
+			fPMTMaterial,          //its material
+			"PMT");           //its name
+
+	fPhysiPMT1 = new G4PVPlacement(transform1,      // rotation
+			fLogicPMT1,             //its logical volume
+			"PMT",                //its name
+			fLogicScint,                //its mother  volume
+			false,                   //no boolean operation
+			0,
+			false) ;                      //copy number
+
+
+ 
 	//     
 	// Shape 2 (PMT 2)
 	//
@@ -304,29 +333,39 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 
 	// Trapezoid shape       
 	fSolidPMT = new G4Trd("PMT",                      //its name
-	0.5*PMT_dxa, 0.5*PMT_dxb,
-	0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+			0.5*PMT_dxa, 0.5*PMT_dxb,
+			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
 
 	fLogicPMT = new G4LogicalVolume(fSolidPMT,         //its solid
-	fPMTMaterial,          //its material
-	"PMT");           //its name
+			fPMTMaterial,          //its material
+			"PMT");           //its name
 
-	fPhysiPMT = new G4PVPlacement(transform,                       //no rotation
-	fLogicPMT,             //its logical volume
-	"PMT",                //its name
-	fLogicScint,                //its mother  volume
-	false,                   //no boolean operation
-	0,
-	false) ;                      //copy number
-
-
+	fPhysiPMT = new G4PVPlacement(transform,                    // rotation
+			fLogicPMT,             //its logical volume
+			"PMT",                //its name
+			fLogicScint,                //its mother  volume
+			false,                   //no boolean operation
+			0,
+			false) ;                      //copy number
+	
 	//                                        
 	// Visualization attributes
 	//
 	fLogicWorld->SetVisAttributes (G4VisAttributes::GetInvisible());
 
-	G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-	simpleBoxVisAtt->SetVisibility(true);
+         G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(0.0, 0.7, 0.93,0.1));
+         simpleBoxVisAtt->SetVisibility(true);
+         simpleBoxVisAtt->SetForceSolid(true);
+ 
+         G4VisAttributes* simpleBoxVisAtt2 = new G4VisAttributes(G4Colour(0.02, 0.91, 1, 0.1));
+         simpleBoxVisAtt2->SetVisibility(true);
+         simpleBoxVisAtt2->SetForceSolid(true);
+ 
+ 
+ fLogicScint->SetVisAttributes(simpleBoxVisAtt);
+ fLogicPMT->SetVisAttributes(simpleBoxVisAtt2);
+ fLogicPMT1->SetVisAttributes(simpleBoxVisAtt2);
+
 
 	//
 	//always return the physical World

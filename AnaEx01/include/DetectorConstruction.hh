@@ -109,6 +109,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		G4VPhysicalVolume* fPhysiWrapping;    //pointer to the physical wrapping
 
+		G4Trd*             fSolidPMT1;    //pointer to the solid PTM
+		G4LogicalVolume*   fLogicPMT1;    //pointer to the logical PMT
+		G4VPhysicalVolume* fPhysiPMT1;    //pointer to the physical PMT
+
 		G4Trd*             fSolidPMT;    //pointer to the solid PTM
 		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT
 		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT
