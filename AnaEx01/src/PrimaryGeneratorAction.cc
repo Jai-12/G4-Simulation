@@ -79,7 +79,7 @@ G4double PrimaryGeneratorAction::random_E(){                       // Energy dis
 
 	r = r_max * myrandpos();
 
-	return 107*MeV;  //return 1*GeV;
+	return 90*MeV;  //return 1*GeV;
 }
 
 

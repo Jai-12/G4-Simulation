@@ -37,7 +37,9 @@
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 
+
 class G4Box;
+class G4Trd;
 class G4LogicalVolume;
 class G4VPhysicalVolume;
 class G4Material;
@@ -79,6 +81,14 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 		G4double           fWorldSizeX;
 		G4double           fWorldSizeY;
 		G4double  	   fWorldSizeZ;
+//PMT
+		G4Material*        fPMTMaterial;
+		G4double 		PMT_dxa; 
+		G4double  		PMT_dxb;
+		G4double  		PMT_dyb;
+		G4double 		PMT_dya; 
+		G4double 		PMT_dz;
+
 
 
 		G4Box*             fSolidScint;    //pointer to the solid Scintillator
@@ -88,6 +98,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 		G4Box*             fSolidWorld;    //pointer to the solid World 
 		G4LogicalVolume*   fLogicWorld;    //pointer to the logical World
 		G4VPhysicalVolume* fPhysiWorld;    //pointer to the physical World
+
+
+		G4Trd*             fSolidPMT1;    //pointer to the solid PTM 1
+		G4LogicalVolume*   fLogicPMT1;    //pointer to the logical PMT 1
+		G4VPhysicalVolume* fPhysiPMT1;    //pointer to the physical PMT 1
+
+		G4Trd*             fSolidPMT;    //pointer to the solid PTM 2
+		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT 2
+		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT 
 
 	private:
 

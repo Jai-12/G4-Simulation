@@ -36,10 +36,14 @@
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 
+
+
 #include "G4Box.hh"
+#include "G4Trd.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4PVReplica.hh"
+#include "G4SubtractionSolid.hh"
 
 #include "G4GeometryManager.hh"
 #include "G4PhysicalVolumeStore.hh"
@@ -50,6 +54,7 @@
 #include "G4Colour.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4RunManager.hh"
+#include "G4ThreeVector.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -71,6 +76,13 @@ DetectorConstruction::DetectorConstruction()
 	fScintSizeX     = 20. *cm;
 	fScintSizeY     = 122.*cm;
 
+
+// parameter values of the PMT
+	PMT_dxa = 6*cm;
+	PMT_dxb = fScintThickness;
+	PMT_dyb = fScintSizeX ;
+	PMT_dya = 6*cm; 
+	PMT_dz  = 16*cm;
 
 
 	// materials
@@ -97,7 +109,8 @@ void DetectorConstruction::DefineMaterials()
 	//
 	G4NistManager* man = G4NistManager::Instance();
 	fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
-	fScintMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE");
+	fScintMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE"); 
+	fPMTMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE");
 
 
 
@@ -155,13 +168,91 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 			0);                                               //copy number  
 
 
+
+
+
+
+
+
+	//     
+	// Shape 1 (PMT 1)
+	//
+
+	//rotation section
+	G4ThreeVector pos1 = G4ThreeVector(0, +69*cm, 0);
+	G4RotationMatrix rotm1  = G4RotationMatrix();
+	rotm1.rotateY(270*deg);
+	rotm1.rotateZ(90*deg);
+	G4Transform3D transform1 = G4Transform3D(rotm1,pos1);
+
+
+	// Trapezoid shape       
+	fSolidPMT1 = new G4Trd("PMT",                      //its name
+			0.5*PMT_dxa, 0.5*PMT_dxb,
+			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+
+	fLogicPMT1 = new G4LogicalVolume(fSolidPMT1,         //its solid
+			fPMTMaterial,          //its material
+			"PMT");           //its name
+
+	fPhysiPMT1 = new G4PVPlacement(transform1,      // rotation
+			fLogicPMT1,             //its logical volume
+			"PMT",                //its name
+			fLogicScint,                //its mother  volume
+			false,                   //no boolean operation
+			0,
+			false) ;                      //copy number
+
+ 
+	//     
+	// Shape 2 (PMT 2)
+	//
+
+	//rotation section
+	G4ThreeVector pos2 = G4ThreeVector(0, -69*cm, 0);
+	G4RotationMatrix rotm  = G4RotationMatrix();
+	rotm.rotateY(90*deg);
+	rotm.rotateZ(90*deg);
+	G4Transform3D transform = G4Transform3D(rotm,pos2);
+
+
+	// Trapezoid shape       
+	fSolidPMT = new G4Trd("PMT",                      //its name
+			0.5*PMT_dxa, 0.5*PMT_dxb,
+			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
+
+	fLogicPMT = new G4LogicalVolume(fSolidPMT,         //its solid
+			fPMTMaterial,          //its material
+			"PMT");           //its name
+
+	fPhysiPMT = new G4PVPlacement(transform,                    // rotation
+			fLogicPMT,             //its logical volume
+			"PMT",                //its name
+			fLogicScint,                //its mother  volume
+			false,                   //no boolean operation
+			0,
+			false) ;                      //copy number
+
+
+
+
+
+
+
+
 	//                                        
 	// Visualization attributes
 	//
 	fLogicWorld->SetVisAttributes (G4VisAttributes::GetInvisible());
 
-	G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
+	G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(0.0,0.0,0.0));
 	simpleBoxVisAtt->SetVisibility(true);
+
+fLogicScint->SetVisAttributes(simpleBoxVisAtt);
+fLogicPMT->SetVisAttributes(simpleBoxVisAtt);
+fLogicPMT1->SetVisAttributes(simpleBoxVisAtt);
+
+
 
 	//
 	//always return the physical World
