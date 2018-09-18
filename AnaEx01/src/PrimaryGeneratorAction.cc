@@ -99,7 +99,7 @@ G4double PrimaryGeneratorAction::random_Y(){                       // Y distribu
 
 	r = r_max * myrand();
 
-	return r;
+	return r;//40;//r;
 }
 
 
@@ -112,7 +112,7 @@ G4double PrimaryGeneratorAction::random_Theta(){                   // Theta dist
 		f = (3.*sqrt(3.)/4) * myrandpos();
 	}while(f > (4)*cos(x)*cos(x)*cos(x)*sin(x));
 
-	return x;
+	return x;//CLHEP::pi/2-0.001;//x;
 }
 
 
