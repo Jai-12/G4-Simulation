@@ -75,11 +75,11 @@ G4double PrimaryGeneratorAction::myrandpos(){                      // Second uni
 
 G4double PrimaryGeneratorAction::random_E(){                       // Energy distribution
 	G4double r;
-	G4double r_max = 1000*GeV;
+	G4double r_max = 10*GeV;
 
 	r = r_max * myrandpos();
 
-	return 1*GeV;  //return 1*GeV;
+	return 3*GeV;  //return 1*GeV;
 }
 
 
@@ -105,7 +105,7 @@ G4double PrimaryGeneratorAction::random_Y(){                       // Y distribu
 
 	r = r_max * myrand();
 
-	return 0;//r;
+	return 60*cm;//r;
 }
 
 
@@ -118,7 +118,7 @@ G4double PrimaryGeneratorAction::random_Theta(){                   // Theta dist
 		f = (3.*sqrt(3.)/4) * myrandpos();
 	}while(f > (4)*cos(x)*cos(x)*cos(x)*sin(x));
 
-	return 0;//x;
+	return x;
 }
 
 
@@ -126,7 +126,7 @@ G4double PrimaryGeneratorAction::random_Phi(){                     // Phi distri
 	G4double r;
 	r = 2*CLHEP::pi * myrandpos();
 	//cout<<"  myrandpos: "<<r<<endl;
-	return 0;//r;
+	return r;
 }
 
 

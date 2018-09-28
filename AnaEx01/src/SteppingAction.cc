@@ -206,7 +206,7 @@ G4int photons_generated = 0;
 
 		 G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
                  G4double q_eff = 0;
-                 if(ph_energy > 0.06640*eV && ph_energy < 9.5*eV) q_eff=1;//real photocathode range: 2.1*eV -4.1*eV
+                 if(ph_energy > 2*eV && ph_energy <4 *eV) q_eff=0.25;//real photocathode range: 2.1*eV -4.1*eV
                  if(myrand() < q_eff){ n_electrons_PMT1 = 1 ;
   //                       fHistoManager->FillHisto(8,ph_energy/eV);
                  };
@@ -233,14 +233,14 @@ G4int photons_generated = 0;
                  G4double q_eff = 0;
 
 	         fHistoManager->FillHisto(6,ph_energy/eV);
+		
+		
 
-
-                 if(ph_energy > 0.06640*eV && ph_energy < 3*eV) q_eff=0.3;//real photocathode range: 2.1*eV -4.1*eV
+                 if(ph_energy > 2*eV && ph_energy < 4*eV) q_eff=0.25;//real photocathode range: 2.1*eV -4.1*eV
                  if(myrand() < q_eff){ n_electrons_PMT2 = 1 ;
                          fHistoManager->FillHisto(8,ph_energy/eV);
                  };
  
-
 		
 		fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
 		photons_collected_PMT2 = 1;		

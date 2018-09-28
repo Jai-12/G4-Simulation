@@ -91,7 +91,7 @@ void HistoManager::Book()
 	// id = 6
 	analysisManager->CreateH1("Initial Photon Energy","Initial Photon Energy", 100, 1, 5*eV/eV);
 	// id = 7
-	analysisManager->CreateH1("Photon time at photocatode","photon time at photocatode", 100, 0, 60*ns/ns);
+	analysisManager->CreateH1("Photon time at photocatode","photon time at photocatode", 200, 0, 30*ns/ns);
 	// id = 8
 	analysisManager->CreateH1("Modified Photon energy spectrum","Modified Photon energy spectrum", 100, 1,5*eV/eV);
 	// id = 9 

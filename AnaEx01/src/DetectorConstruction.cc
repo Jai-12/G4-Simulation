@@ -182,10 +182,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
-	G4double absorption[] = {360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
-			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
-			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
-			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm
+	G4double absorption[] = {200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
+			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
+			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
+			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm
 
 	};
 
