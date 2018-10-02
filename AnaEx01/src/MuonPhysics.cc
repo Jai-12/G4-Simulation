@@ -105,18 +105,18 @@ void MuonPhysics::ConstructProcess()
 	// Muon Plus Physics
 	pManager = G4MuonPlus::MuonPlus()->GetProcessManager();
 
-//	pManager->AddProcess(fMuPlusMultipleScattering,-1,  1, 1);
+	pManager->AddProcess(fMuPlusMultipleScattering,-1,  1, 1);
 	pManager->AddProcess(fMuPlusIonisation,        -1,  2, 2);
-//	pManager->AddProcess(fMuPlusBremsstrahlung,    -1,  3, 3);
-//	pManager->AddProcess(fMuPlusPairProduction,    -1,  4, 4);
+	pManager->AddProcess(fMuPlusBremsstrahlung,    -1,  3, 3);
+	pManager->AddProcess(fMuPlusPairProduction,    -1,  4, 4);
 
 	// Muon Minus Physics
 	pManager = G4MuonMinus::MuonMinus()->GetProcessManager();
 
-//	pManager->AddProcess(fMuMinusMultipleScattering,-1,  1, 1);
+	pManager->AddProcess(fMuMinusMultipleScattering,-1,  1, 1);
 	pManager->AddProcess(fMuMinusIonisation,        -1,  2, 2);
-//	pManager->AddProcess(fMuMinusBremsstrahlung,    -1,  3, 3);
-//	pManager->AddProcess(fMuMinusPairProduction,    -1,  4, 4);
+	pManager->AddProcess(fMuMinusBremsstrahlung,    -1,  3, 3);
+	pManager->AddProcess(fMuMinusPairProduction,    -1,  4, 4);
 
 	pManager->AddRestProcess(fMuMinusCaptureAtRest);
 

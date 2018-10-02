@@ -77,13 +77,13 @@ void HistoManager::Book()
 	// analysisManager->SetFirstHistoId(1);  
 
 	// id = 0
-	analysisManager->CreateH1("EScint","Edep in scintillator (MeV)", 100, 0., 100*MeV/MeV);
+	analysisManager->CreateH1("EScint","Edep in scintillator (MeV)", 100, 0., 80*MeV/MeV);
 	// id = 1
 	analysisManager->CreateH1("LScint","trackL in scintillator (cm)", 100, 0., 3.5*cm/cm);
 	// id = 2
 	analysisManager->CreateH1("myLScint","mytrackL in scintillator (cm)", 100, 0., 3.5*cm/cm);
 	// id = 3
-	analysisManager->CreateH1("myEnergyScint","myEdep in scintillator (MeV)", 100, 0., 1000*MeV/MeV);
+	analysisManager->CreateH1("myEnergyScint","myEdep in scintillator (MeV)", 100, 0.,80 *MeV/MeV);
 
 
 

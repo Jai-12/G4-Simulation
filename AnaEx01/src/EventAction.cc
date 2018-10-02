@@ -183,9 +183,9 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void EventAction::EndOfEventAction(const G4Event*)
+void EventAction::EndOfEventAction(const G4Event* evt)
 {
-	//G4double density = 8.96*g/cm3;
+//	G4double density = 8.96*g/cm3;
 
 	//	G4cout << "MYFUNC   "<<beta*gamma<<"   "<<(fEnergyScint/fTrackLScint)/density*g/cm2/MeV   << G4endl;
 
@@ -193,14 +193,22 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
-/*
 	//If you want to compute the energy loss with the track length comuputed by Geant4, then use this part:
 
 	//computing the mean energy loss with the Bethe-Block formula
 	//Carbon, density:2g/cm3 A:12 Z:6 I: 81 eV 
 
-	G4double m_e = 0.511 *MeV;
 
+
+         //primary particle mass
+         G4double mass = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetMass();
+ 
+         //primary particle charge
+         G4double charge = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetCharge();
+
+
+
+	G4double m_e = 0.511 *MeV;
 	G4double density = 8.96*g/cm3;
 	G4double Z = 29;
 	G4double A = 63.546 ;
@@ -240,7 +248,6 @@ void EventAction::EndOfEventAction(const G4Event*)
 	myEnergyScint = dE_over_dx * fTrackLScint;
 
 
-*/
 
 
 

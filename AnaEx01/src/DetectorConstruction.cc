@@ -245,12 +245,19 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 	//
 	fLogicWorld->SetVisAttributes (G4VisAttributes::GetInvisible());
 
-	G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(0.0,0.0,0.0));
-	simpleBoxVisAtt->SetVisibility(true);
+         G4VisAttributes* simpleBoxVisAtt= new G4VisAttributes(G4Colour(0.0, 0.7, 0.93,0.1));
+         simpleBoxVisAtt->SetVisibility(true);
+         simpleBoxVisAtt->SetForceSolid(true);
+ 
+         G4VisAttributes* simpleBoxVisAtt2 = new G4VisAttributes(G4Colour(0.02, 0.91, 1, 0.1));
+         simpleBoxVisAtt2->SetVisibility(true);
+         simpleBoxVisAtt2->SetForceSolid(true);
+ 
+ 
+ fLogicScint->SetVisAttributes(simpleBoxVisAtt);
+ fLogicPMT->SetVisAttributes(simpleBoxVisAtt2);
+ fLogicPMT1->SetVisAttributes(simpleBoxVisAtt2);
 
-fLogicScint->SetVisAttributes(simpleBoxVisAtt);
-fLogicPMT->SetVisAttributes(simpleBoxVisAtt);
-fLogicPMT1->SetVisAttributes(simpleBoxVisAtt);
 
 
 
