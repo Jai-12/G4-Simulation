@@ -137,3 +137,4 @@ void HistoManager::Normalize(G4int ih, G4double fac)
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
