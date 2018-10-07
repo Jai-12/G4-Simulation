@@ -84,6 +84,12 @@ void HistoManager::Book()
 	analysisManager->CreateH1("myLScint","mytrackL in scintillator (cm)", 100, 0., 3.5*cm/cm);
 	// id = 3
 	analysisManager->CreateH1("myEnergyScint","myEdep in scintillator (MeV)", 100, 0.,80 *MeV/MeV);
+	// id = 4
+	analysisManager->CreateH1("stoppingPower","stopping_power",100 , 0.1, 10);
+	// id = 5
+	analysisManager->CreateH1("beta_gamma","Beta_Gamma", 100, 0, 1e4);
+
+
 
 
 

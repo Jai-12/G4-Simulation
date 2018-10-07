@@ -249,9 +249,14 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 
 
 
+ G4cout  << "STOPPINGPOW  "  << (fEnergyScint/fTrackLScint/density)/MeV/cm/cm*g  << "    "  <<  beta*gamma << G4endl;
 
 
+ // fHistoManager->FillHisto(4, (fEnergyScint/fTrackLScint/density)/MeV/cm/cm*g);
+ // fHistoManager->FillHisto(5, beta*gamma);
+  
 
+//fHistoManager->FillHisto(?, (fEnergyScint/fTrackLScint/density)/MeV/cm/cm*g);
 
 
 
