@@ -89,7 +89,7 @@ G4double PrimaryGeneratorAction::random_X(){ 			   // X distribution
 
 	r = r_max * myrand();
 
-	return 0;
+	return r;
 }
 
 
@@ -99,7 +99,7 @@ G4double PrimaryGeneratorAction::random_Y(){                       // Y distribu
 
 	r = r_max * myrand();
 
-	return 0;
+	return r;
 }
 
 
@@ -112,7 +112,7 @@ G4double PrimaryGeneratorAction::random_Theta(){                   // Theta dist
 		f = (3.*sqrt(3.)/4) * myrandpos();
 	}while(f > (4)*cos(x)*cos(x)*cos(x)*sin(x));
 
-	return 0;//CLHEP::pi/2-0.001;//x;
+	return x;//CLHEP::pi/2-0.001;//x;
 }
 
 
@@ -120,7 +120,7 @@ G4double PrimaryGeneratorAction::random_Phi(){                     // Phi distri
 	G4double r;
 	r = 2*CLHEP::pi * myrandpos();
 	//cout<<"  myrandpos: "<<r<<endl;
-	return 0;
+	return r;
 }
 
 
