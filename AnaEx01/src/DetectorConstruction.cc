@@ -167,7 +167,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 //	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
 	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 100000./MeV); //10000 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 50000./MeV); //10000 
 
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
@@ -182,10 +182,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6,
 		1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6, 1.6
 	};
-	G4double absorption[] = {200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
-			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
-			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm,
-			200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm, 200*cm
+	G4double absorption[] = {360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm,
+			360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm, 360*cm
 
 	};
 

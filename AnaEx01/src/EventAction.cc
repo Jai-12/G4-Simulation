@@ -91,12 +91,12 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	fTrackLScint  = 0;
 	myTrackLScint = 0;
 	myEnergyScint = 0;
-        fPhotonNumberCol= 0.;
-        fPhotonNumberGen = 0. ;
+	fPhotonNumberCol= 0.;
+	fPhotonNumberGen = 0. ;
 	fElectronsGenerated = 0.;
 	finalElectronsNumber_A=0.;
 	finalElectronsNumber_B=0.;
-//	evt->GetPrimaryVertex(0)->GetPrimary(0)  ;
+	//	evt->GetPrimaryVertex(0)->GetPrimary(0)  ;
 
 
 	//primary particle position when generated 
@@ -111,7 +111,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 
 	//primary particle total energy when generated 
 	p_particleEnergy = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetTotalEnergy();    	
-	
+
 	//primary particle mass
 	G4double mass = evt->GetPrimaryVertex(0)->GetPrimary(0)->GetMass();
 
@@ -134,7 +134,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	else myTrackLScint = sqrt( pow((p_particleX-x_down),2) + pow((p_particleY-y_down),2) + pow(d,2) );   //computing the travelled distance 
 
 
-/*
+	/*
 	//computing the mean energy loss with the Bethe-Block formula
 	//Carbon, density:2g/cm3 A:12 Z:6 I: 81 eV 
 
@@ -185,7 +185,7 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 
 
 
-*/
+	 */
 
 
 }
@@ -202,7 +202,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
-/*
+	/*
 	//If you want to compute the energy loss with the track length comuputed by Geant4, then use this part:
 
 	//computing the mean energy loss with the Bethe-Block formula
@@ -249,7 +249,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 	myEnergyScint = dE_over_dx * fTrackLScint;
 
 
-*/
+	 */
 
 
 
@@ -258,29 +258,50 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
- //******************  MOLTIPLICATION SECTION    ***************
- 
- 
- 
- G4double totalGain = 1e7 ;
- G4int numberOfDinodes = 12;
- G4double idealGainPerDinode = pow(totalGain, pow(numberOfDinodes,-1));
-	
-fElectronsGenerated = 8230;
+	//******************  MOLTIPLICATION SECTION    ***************
 
-finalElectronsNumber_A = fElectronsGenerated;
-finalElectronsNumber_B = fElectronsGenerated* /*CLHEP::RandPoissonQ::shoot(*/totalGain;//);
+/*	G4double totalGain =  5*1e7;
+	G4int numberOfDinodes = 12;
+	G4double idealGainPerDinode = pow(totalGain, pow(numberOfDinodes,-1));
+
+	fElectronsGenerated = 100;
+
+ finalElectronsNumber_A = 0; 
+ finalElectronsNumber_B = 0;
+//	double finalElectronsNumber_C = 0;
+	for (int je=0; je<fElectronsGenerated; je++){
+		double nsec_A=1;	
+		double nsec_B=1;	
+		for(int n=0; n < numberOfDinodes; n++){
+			double gainForThisDinode =  CLHEP::RandPoissonQ::shoot( idealGainPerDinode); 
+			nsec_A*=gainForThisDinode;
+		}
+		finalElectronsNumber_A+=nsec_A;
+		//method B
+
+		nsec_B = CLHEP::RandPoissonQ::shoot(totalGain); 
+
+		finalElectronsNumber_B+=nsec_B;
 
 
-for(int n=0; n < numberOfDinodes; n++){
 
-	G4double gainForThisDinode =  /*CLHEP::RandPoissonQ::shoot(*/ idealGainPerDinode;//);  // (mean=idealGainPerDinode)
-	
-finalElectronsNumber_A  = gainForThisDinode*finalElectronsNumber_A ;
+	}
 
- 
- };
- 
+	// method C
+
+//	finalElectronsNumber_C  =   fElectronsGenerated*r0->PoissonD(totalGain) ;
+
+
+//	n_electrons_A->Fill(finalElectronsNumber_A);
+//	n_electrons_B->Fill(finalElectronsNumber_B);
+//	n_electrons_C->Fill(finalElectronsNumber_C);
+
+
+
+
+
+
+*/
 
 
 
@@ -295,7 +316,7 @@ finalElectronsNumber_A  = gainForThisDinode*finalElectronsNumber_A ;
 	fHistoManager->FillHisto(10, fElectronsGenerated);	
 	fHistoManager->FillHisto(11, finalElectronsNumber_A);	
 	fHistoManager->FillHisto(12, finalElectronsNumber_B);	
-	
+
 
 
 }  
