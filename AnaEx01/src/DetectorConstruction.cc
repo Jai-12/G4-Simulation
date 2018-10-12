@@ -87,11 +87,9 @@ DetectorConstruction::DetectorConstruction()
 
 
 	// parameter values of the PMT
-	PMT_dxa = 6*cm;
-	PMT_dxb = fScintThickness;
-	PMT_dyb = fScintSizeX ;
-	PMT_dya = 6*cm; 
-	PMT_dz  = 16*cm;
+	fPMTThickness = 1. *cm;
+	fPMTSizeX     = 20.  *cm;
+	fPMTSizeY     = 10.  *cm;
 
 
 	// materials
@@ -166,8 +164,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 	fScintMaterial_MPT->AddProperty("FASTCOMPONENT", photonEnergy, fScintMaterial_FAST, NUMENTRIES);
 //	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
-	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 50000./MeV); //10000 
+	// 100 photons per eV (plastic scintillator according to "Techniques, Leo" book ) 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 1./TeV); //10000 
 
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
@@ -310,61 +308,42 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 	// Shape 1 (PMT 1)
 	//
 
-	//rotation section
-	G4ThreeVector pos1 = G4ThreeVector(0, +69*cm, 0);
-	G4RotationMatrix rotm1  = G4RotationMatrix();
-	rotm1.rotateY(270*deg);
-	rotm1.rotateZ(90*deg);
-	G4Transform3D transform1 = G4Transform3D(rotm1,pos1);
+	//Cubic  shape       
+	fSolidPMT1 = new G4Box("PMT1",                           //its name
+			fPMTSizeX/2, fPMTSizeY/2, fPMTThickness/2); //its size
 
+	fLogicPMT1 = new G4LogicalVolume(fSolidPMT1,                    //its solid
+			fPMTMaterial,                                   //its material
+			"PMT1");                                  //its name
 
-	// Trapezoid shape       
-	fSolidPMT1 = new G4Trd("PMT",                      //its name
-			0.5*PMT_dxa, 0.5*PMT_dxb,
-			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
-
-	fLogicPMT1 = new G4LogicalVolume(fSolidPMT1,         //its solid
-			fPMTMaterial,          //its material
-			"PMT");           //its name
-
-	fPhysiPMT1 = new G4PVPlacement(transform1,      // rotation
-			fLogicPMT1,             //its logical volume
-			"PMT",                //its name
-			fLogicScint,                //its mother  volume
-			false,                   //no boolean operation
-			0,
-			false) ;                      //copy number
-
-
+	fPhysiPMT1 = new G4PVPlacement(0,                                //no rotation
+			G4ThreeVector(0,61*cm+fPMTSizeY/2,0),                                  //at (0,0,0)
+			fLogicPMT1,                                      //its logica volume
+			"PMT1",                                   //its name
+			fLogicWorld,                                      //its mother volume
+			false,                                            //no boolean operation
+			0);                                               //copy number  
  
 	//     
 	// Shape 2 (PMT 2)
 	//
 
-	//rotation section
-	G4ThreeVector pos2 = G4ThreeVector(0, -69*cm, 0);
-	G4RotationMatrix rotm  = G4RotationMatrix();
-	rotm.rotateY(90*deg);
-	rotm.rotateZ(90*deg);
-	G4Transform3D transform = G4Transform3D(rotm,pos2);
+	//Cubic  shape       
+	fSolidPMT = new G4Box("PMT",                           //its name
+			fPMTSizeX/2, fPMTSizeY/2, fPMTThickness/2); //its size
 
+	fLogicPMT = new G4LogicalVolume(fSolidPMT,                    //its solid
+			fPMTMaterial,                                   //its material
+			"PMT");                                  //its name
 
-	// Trapezoid shape       
-	fSolidPMT = new G4Trd("PMT",                      //its name
-			0.5*PMT_dxa, 0.5*PMT_dxb,
-			0.5*PMT_dya, 0.5*PMT_dyb, 0.5*PMT_dz); //its size
-
-	fLogicPMT = new G4LogicalVolume(fSolidPMT,         //its solid
-			fPMTMaterial,          //its material
-			"PMT");           //its name
-
-	fPhysiPMT = new G4PVPlacement(transform,                    // rotation
-			fLogicPMT,             //its logical volume
-			"PMT",                //its name
-			fLogicScint,                //its mother  volume
-			false,                   //no boolean operation
-			0,
-			false) ;                      //copy number
+	fPhysiPMT = new G4PVPlacement(0,                                //no rotation
+			G4ThreeVector(0,-61*cm-fPMTSizeY/2,0),                                  //at (0,0,0)
+			fLogicPMT,                                      //its logica volume
+			"PMT",                                   //its name
+			fLogicWorld,                                      //its mother volume
+			false,                                            //no boolean operation
+			0);                                               //copy number  
+ 
 
 
 
@@ -427,7 +406,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
          simpleBoxVisAtt->SetVisibility(true);
          simpleBoxVisAtt->SetForceSolid(true);
  
-         G4VisAttributes* simpleBoxVisAtt2 = new G4VisAttributes(G4Colour(0.02, 0.91, 1, 0.1));
+         G4VisAttributes* simpleBoxVisAtt2 = new G4VisAttributes(G4Colour(0.02, 0.91, 0.5, 0.3));
          simpleBoxVisAtt2->SetVisibility(true);
          simpleBoxVisAtt2->SetForceSolid(true);
  

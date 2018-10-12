@@ -164,14 +164,14 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	G4int id = aStep->GetTrack()->GetTrackID(); 
 	G4int status = aStep->GetTrack()->GetTrackStatus();  
 	G4double photo_stepl = aStep->GetStepLength();
-
+	absorbedPhotons = 0;
 	if (ParticleName == "opticalphoton" ){
 		//sum all steps lengths of the same track 
 		photons_map[id] += photo_stepl; 
 
 		//fill the histo only if the photon is absorbed in the scintillator 
 		if(status==2  && final_volume == fDetector->GetScint())  {  //status = 2 means photon absorbed
-
+			absorbedPhotons = 1;
 			fHistoManager->FillHisto(9,photons_map[id]/cm);
 		};
 
@@ -204,12 +204,6 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 			aStep->GetTrack()->GetTrackStatus()==2) // "2" means track killed
 	{
 
-		G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
-		G4double q_eff = 0;
-		if(ph_energy > 2*eV && ph_energy <4 *eV) q_eff=0.25;//real photocathode range: 2.1*eV -4.1*eV
-		if(myrand() < q_eff){ n_electrons_PMT1 = 1 ;
-			//                       fHistoManager->FillHisto(8,ph_energy/eV);
-		};
 
 
 
@@ -230,52 +224,10 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	{
 
 		G4double ph_energy = aStep->GetTrack()->GetTotalEnergy();
-		G4double q_eff = 0;
-
-		fHistoManager->FillHisto(6,ph_energy/eV);
-
-
-
-		if(ph_energy > 2*eV && ph_energy < 4*eV) q_eff=0.25;//real photocathode range: 2.1*eV -4.1*eV
-		if(myrand() < q_eff){ n_electrons_PMT2 = 1 ;
-			fHistoManager->FillHisto(8,ph_energy/eV);
 
 
 
 
-			//******************  MOLTIPLICATION SECTION    ***************
-
-			G4double totalGain =  1;//1e5;
-			G4int numberOfDinodes =1;// 12;
-			G4double idealGainPerDinode = pow(totalGain, pow(numberOfDinodes,-1));
-
-
-			G4double  finalElectronsNumber_A = 0; 
-			G4double  finalElectronsNumber_B = 0;
-		//	        for (G4int je=0; je<fElectronsGenerated; je++){
-				  G4double nsec_A=1;        
-				  G4double nsec_B=1;        
-		//		  for(G4int n=0; n < numberOfDinodes; n++){
-		//		  G4double gainForThisDinode =  CLHEP::RandPoissonQ::shoot( idealGainPerDinode); 
-		//		  nsec_A*=gainForThisDinode;
-		//		  }
-		//		  finalElectronsNumber_A+=nsec_A;
-			              //method B
-
-			nsec_B = CLHEP::RandPoissonQ::shoot(totalGain); 
-
-			finalElectronsNumber_B+=nsec_B;
-
-
-
-
-				for(G4int k=0 ;k < finalElectronsNumber_B; k++)	 fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
-
-			};
-
-
-
-	//	};
 
 
 //				fHistoManager->FillHisto(7,aStep->GetTrack()->GetGlobalTime()/ns);
@@ -286,7 +238,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 	//////////////////// ADDING QUANTITIES of THE CURRENT STEP  //////////////////////////
 	//G4cout << " ELECTRONS: " <<n_electrons << G4endl;
-	fEventAction->AddScint(edep,stepl,photons_generated, photons_collected_PMT2,n_electrons_PMT2);
+	fEventAction->AddScint(edep,absorbedPhotons, photons_generated, photons_collected_PMT1,photons_collected_PMT2);
 
 
 }

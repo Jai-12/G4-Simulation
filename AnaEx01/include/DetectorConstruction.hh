@@ -91,11 +91,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 		G4double	   fWrappingThickness;
 //PMT
 		G4Material*        fPMTMaterial;
-		G4double 		PMT_dxa; 
-		G4double  		PMT_dxb;
-		G4double  		PMT_dyb;
-		G4double 		PMT_dya; 
-		G4double 		PMT_dz;
+		G4double           fPMTThickness;
+		G4double           fPMTSizeX;
+		G4double           fPMTSizeY;
 
 
 
@@ -110,11 +108,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		G4VPhysicalVolume* fPhysiWrapping;    //pointer to the physical wrapping
 
-		G4Trd*             fSolidPMT1;    //pointer to the solid PTM 1
+		G4Box*             fSolidPMT1;    //pointer to the solid PTM 1
 		G4LogicalVolume*   fLogicPMT1;    //pointer to the logical PMT 1
 		G4VPhysicalVolume* fPhysiPMT1;    //pointer to the physical PMT 1
 
-		G4Trd*             fSolidPMT;    //pointer to the solid PTM 2
+		G4Box*             fSolidPMT;    //pointer to the solid PTM 2
 		G4LogicalVolume*   fLogicPMT;    //pointer to the logical PMT 2
 		G4VPhysicalVolume* fPhysiPMT;    //pointer to the physical PMT 
 

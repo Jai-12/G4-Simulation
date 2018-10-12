@@ -64,7 +64,7 @@ class SteppingAction : public G4UserSteppingAction
 		G4int n_electrons_PMT1;
 		G4int photons_collected_PMT2;
 		G4int n_electrons_PMT2;
-
+		G4int absorbedPhotons;
 
 };
 

@@ -52,12 +52,12 @@ class EventAction : public G4UserEventAction
 		virtual void  BeginOfEventAction(const G4Event*);
 		virtual void  EndOfEventAction(const G4Event*);
 
-		void AddScint(G4double de, G4double dl, G4int dn1, G4int dn2, G4int dn3) {
+		void AddScint(G4double de, G4int dl, G4int dn1, G4int dn2, G4int dn3) {
 						fEnergyScint += de; 
-						fTrackLScint += dl;
+						fPhotonNumberAbs += dl;
 						fPhotonNumberGen += dn1; 
-						fPhotonNumberCol += dn2;
-						fElectronsGenerated += dn3 ;    ;} 
+						fPhotonNumberColPMT1 += dn2;
+						fPhotonNumberColPMT2 += dn3 ;    ;} 
 
 		//		G4cout << "TOTAL_ELECTRONS: " << fElectronsGenerated << G4endl;	};
 
@@ -80,8 +80,11 @@ class EventAction : public G4UserEventAction
 		G4double  myEnergyScint;  	//add comments
 
 		long 	  fPhotonNumberGen;	
-		long	  fPhotonNumberCol;	
+		long	  fPhotonNumberColPMT1;	
+		long	  fPhotonNumberColPMT2;	
+		long	  fPhotonNumberAbs;	
 
+	
 		long  finalElectronsNumber_A;
 		long  finalElectronsNumber_B;
 

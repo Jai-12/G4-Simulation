@@ -65,7 +65,9 @@ EventAction::EventAction(RunAction* run, HistoManager* histo)
 	p_particleEnergy(0.),
 	myTrackLScint(0.),
 	myEnergyScint(0.),
-	fPhotonNumberCol(0.),
+	fPhotonNumberAbs(0.),
+	fPhotonNumberColPMT1(0.),
+	fPhotonNumberColPMT2(0.),
 	fPhotonNumberGen(0.),
 	fElectronsGenerated(0.),	
 	finalElectronsNumber_A(0.),
@@ -91,7 +93,9 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
 	fTrackLScint  = 0;
 	myTrackLScint = 0;
 	myEnergyScint = 0;
-	fPhotonNumberCol= 0.;
+	fPhotonNumberColPMT1= 0.;
+	fPhotonNumberColPMT2= 0.;
+	fPhotonNumberAbs= 0.;
 	fPhotonNumberGen = 0. ;
 	fElectronsGenerated = 0.;
 	finalElectronsNumber_A=0.;
@@ -253,7 +257,7 @@ void EventAction::EndOfEventAction(const G4Event*)
 
 
 
-	G4cout << "MYDATA  " <<  fTrackLScint/cm/fPhotonNumberGen << "  " <<  fPhotonNumberGen  << "  " << fPhotonNumberCol    << G4endl;
+//	G4cout << "MYDATA  " <<  fTrackLScint/cm/fPhotonNumberGen << "  " <<  fPhotonNumberGen  << "  " << fPhotonNumberCol    << G4endl;
 
 
 
@@ -310,10 +314,10 @@ void EventAction::EndOfEventAction(const G4Event*)
 	fHistoManager->FillHisto(0, fEnergyScint/MeV);
 	fHistoManager->FillHisto(1, fTrackLScint/cm);
 	fHistoManager->FillHisto(2, myTrackLScint/cm);
-	fHistoManager->FillHisto(3, myEnergyScint/MeV);
+	fHistoManager->FillHisto(3, fPhotonNumberAbs);
 	fHistoManager->FillHisto(4, fPhotonNumberGen);
-	fHistoManager->FillHisto(5, fPhotonNumberCol);
-	fHistoManager->FillHisto(10, fElectronsGenerated);	
+	fHistoManager->FillHisto(5, fPhotonNumberColPMT1);
+	fHistoManager->FillHisto(10,fPhotonNumberColPMT2);	
 	fHistoManager->FillHisto(11, finalElectronsNumber_A);	
 	fHistoManager->FillHisto(12, finalElectronsNumber_B);	
 
