@@ -105,7 +105,7 @@ G4double PrimaryGeneratorAction::random_Y(){                       // Y distribu
 
 	r = r_max * myrand();
 
-	return 40*cm ;
+	return -40*cm ;
 }
 
 

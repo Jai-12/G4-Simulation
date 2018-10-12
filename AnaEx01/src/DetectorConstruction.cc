@@ -156,7 +156,7 @@ void DetectorConstruction::DefineMaterials()
 //	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
 	// 100 photons per eV (plastic scintillator according to the "Techniques" book ) 
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 20./MeV); //10000 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 100000./MeV); //10000 
 
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
