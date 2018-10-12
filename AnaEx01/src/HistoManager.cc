@@ -83,11 +83,11 @@ void HistoManager::Book()
 	// id = 2
 	analysisManager->CreateH1("myLScint","mytrackL in scintillator (cm)", 100, 0., 3.5*cm/cm);
 	// id = 3
-	analysisManager->CreateH1("photonsAbsorbed","photons_absorbed", 150, 0., 500);
+	analysisManager->CreateH1("photonsAbsorbed","photons_absorbed", 100, 130., 260);
 	// id = 4
-	analysisManager->CreateH1("photonsGenerated","photons_generated", 150, 0, 1000);
+	analysisManager->CreateH1("photonsGenerated","photons_generated", 100, 410, 655 );
 	// id = 5
-	analysisManager->CreateH1("photonsCollectedPMT1","photons_collectedPMT1", 150, 0, 500);
+	analysisManager->CreateH1("photonsCollectedPMT1","photons_collectedPMT1", 150, 95, 250);
 	// id = 6
 	analysisManager->CreateH1("Initial Photon Energy","Initial Photon Energy", 100, 1, 5*eV/eV);
 	// id = 7
@@ -97,7 +97,7 @@ void HistoManager::Book()
 	// id = 9 
 	analysisManager->CreateH1("photons track length","photons track length", 100, 0,1200*cm/cm);
 	// id = 10
-	analysisManager->CreateH1("photonsCollectedPMT2","photons_collectedPMT2", 150, 0, 500);
+	analysisManager->CreateH1("photonsCollectedPMT2","photons_collectedPMT2", 150, 95, 250);
 	// id = 11
 	analysisManager->CreateH1("Final Electrons Generated_A","final electrons generated_A", 100, 0, 1e12);
 	// id = 12

@@ -165,7 +165,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructScint()
 //	fScintMaterial_MPT->AddProperty("SLOWCOMPONENT", photonEnergy, fScintMaterial_SLOW, NUMENTRIES);
 
 	// 100 photons per eV (plastic scintillator according to "Techniques, Leo" book ) 
-	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 1./TeV); //10000 
+	fScintMaterial_MPT->AddConstProperty("SCINTILLATIONYIELD", 1. /GeV); //10000 
 
 	fScintMaterial_MPT->AddConstProperty("RESOLUTIONSCALE", 2.0);
 	fScintMaterial_MPT->AddConstProperty("FASTTIMECONSTANT", 1.*ns);
