@@ -88,7 +88,7 @@ G4double PrimaryGeneratorAction::random_E(){                       // Energy dis
 		f = 1000 * myrandpos();
 	}while(f > exp(x/5*GeV));
 
-	return 3*GeV;//x;
+	return 20*MeV;//x;
 
 }
 
@@ -165,7 +165,7 @@ void PrimaryGeneratorAction::GeneratePrimaries( G4Event* anEvent )
 	G4String particleName;
 	particleGun->SetParticleDefinition( //I could use mu-, or generate randomly both mu- and mu+
 			particleTable->
-			FindParticle(particleName="mu-")); 
+			FindParticle(particleName="mu+")); 
 
 
 	//Setting energy position and momentum direction

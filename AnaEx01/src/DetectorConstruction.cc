@@ -109,8 +109,11 @@ void DetectorConstruction::DefineMaterials()
 	//
 	G4NistManager* man = G4NistManager::Instance();
 	fDefaultMaterial = man->FindOrBuildMaterial("G4_Galactic");
-	fScintMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE"); 
-	fPMTMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE");
+//	fScintMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE"); 
+	//fPMTMaterial   = man->FindOrBuildMaterial("G4_Cu");//"G4_POLYSTYRENE");
+fPMTMaterial   = man->FindOrBuildMaterial("G4_POLYSTYRENE");//"G4_POLYSTYRENE");
+	fScintMaterial   = man->FindOrBuildMaterial("G4_POLYSTYRENE");//"G4_POLYSTYRENE"); 
+	
 
 
 
