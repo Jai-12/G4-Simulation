@@ -245,7 +245,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 
 			//******************  MOLTIPLICATION SECTION    ***************
 
-			G4double totalGain =  1;//1e5;
+			G4double totalGain =  1e5;
 			G4int numberOfDinodes =1;// 12;
 			G4double idealGainPerDinode = pow(totalGain, pow(numberOfDinodes,-1));
 
