@@ -89,7 +89,7 @@ G4double PrimaryGeneratorAction::random_X(){ 			   // X distribution
 
 	r = r_max * myrand();
 
-	return r;
+	return 5*cm;
 }
 
 
@@ -99,7 +99,7 @@ G4double PrimaryGeneratorAction::random_Y(){                       // Y distribu
 
 	r = r_max * myrand();
 
-	return r;
+	return 40*cm;
 }
 
 
