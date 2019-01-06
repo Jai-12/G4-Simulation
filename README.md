@@ -1,2 +1,2 @@
 # G4-Simulation
-This repository contains the code of a simulation with Geant4. The simulation riproduce the operation of a scintillation detector. This work si widely described in **my thesis**, that is availabele here: https://www.dropbox.com/sh/3fsv7xfb698c069/AAD4GamO7W1HUvSro1DnDPDja?dl=0
+This repository contains the code of a simulation with Geant4 (AnaEx01). The simulation riproduce the operation of a scintillation detector that reveals cosmic muons. This work si widely described in **my thesis**, that is also in the repository (Bachelors_thesis), but in case of problems, it is also available here: https://www.dropbox.com/sh/3fsv7xfb698c069/AAD4GamO7W1HUvSro1DnDPDja?dl=0
